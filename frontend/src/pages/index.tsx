@@ -25,10 +25,9 @@ export default function Home() {
           </li>
         ))}
       </ul>
-      <div className="text-center">
-        <Link href="write" className="text-2xl">
-          write
-        </Link>
+      <div className="text-center text-2xl flex gap-2 justify-center items-center">
+        <Link href="user/new">SignUp</Link>
+        <Link href="write">Write</Link>
       </div>
     </main>
   );
