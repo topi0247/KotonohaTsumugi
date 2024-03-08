@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import styles from "./index.module.css";
+import { useAuth } from "@/providers/auth";
 
 const Write = () => {
   const [text, setText] = useState("");
   const [textCount, setTextCount] = useState(0);
+  const { currentUser } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -16,7 +18,7 @@ const Write = () => {
       <div className="relative w-full ml-auto vertical-rl flex flex-col py-10">
         <div className="text-4xl mx-2 flex justify-between items-center">
           <h2>タイトル</h2>
-          <h3 className="m-4 text-2xl text-bold">とぴ</h3>
+          <h3 className="m-4 text-2xl text-bold">{currentUser.name}</h3>
         </div>
         {/* <div className={styles.box}></div> */}
         <div className="mx-10 w-[1000px] p-5 bg-white">

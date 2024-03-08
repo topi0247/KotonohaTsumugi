@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users, only: [:index, :create, :show, :update, :destroy]
+      resources :ssnovels, only: [:index, :create, :show]
+      resources :ssnovel_bodies, only: [:create]
       post '/login' => 'user_sessions#create'
       delete '/logout' => 'user_sessions#destroy'
       get '/current_user' => 'user_sessions#current_user'
