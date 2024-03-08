@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "localhost:8000","relay-writer.vercel.app"
+    origins "http://localhost:8000", "http://relay-writer.vercel.app"
 
     resource "*",
       headers: :any,
