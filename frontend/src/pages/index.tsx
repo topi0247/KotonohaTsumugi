@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type Task = {
@@ -24,6 +25,11 @@ export default function Home() {
           </li>
         ))}
       </ul>
+      <div className="text-center">
+        <Link href="write" className="text-2xl">
+          write
+        </Link>
+      </div>
     </main>
   );
 }

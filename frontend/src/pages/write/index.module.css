@@ -1,0 +1,29 @@
+.box {
+  margin: auto;
+  /* max-width: 500px;
+  height: 200px; */
+  border: 2px solid #008500;
+  background-color: #ffffff;
+  background-image: linear-gradient(
+      to right,
+      #ffffff,
+      #ffffff 10%,
+      #008500 11%,
+      #008500 12%,
+      transparent 13%,
+      transparent 87%,
+      #008500 88%,
+      #008500 89%,
+      #ffffff 90%,
+      #ffffff
+    ),
+    linear-gradient(
+      to bottom,
+      transparent,
+      transparent 97%,
+      #008500 98%,
+      #008500
+    );
+  background-position: right 2px top;
+  background-size: 60px 48px;
+}
