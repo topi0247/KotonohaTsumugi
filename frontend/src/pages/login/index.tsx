@@ -13,7 +13,7 @@ const SignInPage = () => {
     e.preventDefault();
     const res = await login(email, password);
     if (res.status === 200) {
-      router.push("/write");
+      router.push("/write/new");
     }
   };
 
