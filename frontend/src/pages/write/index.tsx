@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { useAuth } from "@/providers/auth";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const Write = () => {
-  const { user } = useAuth();
-  const router = useRouter();
+  const { currentUser } = useAuth();
   const [text, setText] = useState("");
   const [textCount, setTextCount] = useState(0);
 
@@ -20,10 +18,10 @@ const Write = () => {
 
   return (
     <>
-      <div className="relative w-full ml-auto vertical-rl flex flex-col py-10">
+      <div className="relative w-full ml-auto flex flex-col py-10">
         <div className="text-4xl mx-2 flex justify-between items-center">
           <h2>タイトル</h2>
-          <h3 className="m-4 text-2xl text-bold">{user?.name}</h3>
+          <h3 className="m-4 text-2xl text-bold">{currentUser.name}</h3>
         </div>
         {/* <div className={styles.box}></div> */}
         <div className="mx-10 w-[1000px] p-5 bg-white">

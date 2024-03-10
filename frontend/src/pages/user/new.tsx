@@ -1,10 +1,10 @@
 import { Button, TextField } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState } from "react";
-// import { useAuth } from "@/providers/auth";
+import { useAuth } from "@/providers/auth";
 
 const SignUp = () => {
-  //const { signUp } = useAuth();
+  const { signUp } = useAuth();
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,33 +13,12 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetch("http://localhost:3000/api/v1/signup", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user: {
-          email: "test@test.com",
-          password: "password",
-          name: "test",
-        },
-      }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          console.log(res.headers.get("Authorization"));
-          const token = res.headers.get("Authorization");
-          if (token) {
-            localStorage.setItem("token", token);
-          }
-          return res.json();
-        } else {
-          throw new Error(res.statusText);
-        }
-      })
-      .then((json) => console.dir(json))
-      .catch((err) => console.error(err));
+    try {
+      await signUp(name, email, password, passwordConfirmation);
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

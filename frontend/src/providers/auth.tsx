@@ -1,5 +1,6 @@
 // context/AuthContext.tsx
 import { createContext, useContext, useState, ReactNode } from "react";
+import { getCookie } from "typescript-cookie";
 
 interface User {
   id: number;
@@ -8,9 +9,15 @@ interface User {
 }
 
 interface AuthContextType {
-  user: User | null;
+  currentUser: () => Promise<User | null>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  signUp: (
+    name: string,
+    email: string,
+    password: string,
+    passwordConfirm: string
+  ) => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -32,25 +39,48 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<any>(null);
+  const currentUser = async () => {
+    try {
+      const response = await fetch(`${API_FULL_URL}/current_user/index`, {
+        method: "GET",
+        credentials: "include",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: `_relay_writer_session=${getCookie(
+            "_relay_writer_session"
+          )}`,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("ユーザー情報の取得に失敗しました");
+      }
+      const user = await response.json();
+      return user;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const login = async (email: string, password: string) => {
-    const response = await fetch(`${API_FULL_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (!response.ok) {
-      throw new Error("ログインに失敗しました");
+      console.log(response);
+      if (!response.ok) {
+        throw new Error("ログインに失敗しました");
+      }
+      const user = await response.json();
+      //setUser(user);
+    } catch (error) {
+      console.error(error);
     }
-
-    const user = await response.json();
-    console.log(user);
-    //setUser(user);
   };
 
   const logout = async () => {
@@ -58,14 +88,40 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       method: "DELETE",
       credentials: "include", // クロスオリジンCookieを含める
     });
-    console.log(response);
-    setUser(null);
+  };
+
+  const signUp = async (
+    name: string,
+    email: string,
+    password: string,
+    passwordConfirm: string
+  ) => {
+    try {
+      const response = await fetch(`${API_URL}/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ name, email, password, passwordConfirm }),
+      });
+
+      console.log(response);
+      if (!response.ok) {
+        throw new Error("登録に失敗しました");
+      }
+      const user = await response.json();
+      //setUser(user);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const value = {
-    user,
+    currentUser,
     login,
     logout,
+    signUp,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

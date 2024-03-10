@@ -16,12 +16,20 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <div className={ShipporiMinchoB1.className}>
-          <_Headers />
-          <main className="max-w-[1200px] h-screen m-auto">
-            <Component {...pageProps} />
-          </main>
-          <footer></footer>
+        <div
+          className={`${ShipporiMinchoB1.className} flex max-h-screen overflow-y-hidden`}
+        >
+          <div className="ml-auto flex flex-col vertical-rl">
+            <header className="w-32">
+              <_Headers />
+            </header>
+            <main className="max-w-[1200px] h-screen m-auto">
+              <Component {...pageProps} />
+            </main>
+          </div>
+          <footer className="fixed bottom-0 w-full flex justify-center items-center">
+            ©ことのはつむぎ
+          </footer>
         </div>
       </AuthProvider>
     </ThemeProvider>

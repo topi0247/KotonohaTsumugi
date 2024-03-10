@@ -9,7 +9,7 @@ class Api::V1::Users::SessionsController < Devise::SessionsController
   private
 
   def sign_in_params
-    params.require(:user).permit(:email, :password)
+    params.permit(:email, :password)
   end
 
   def respond_with(resource, _opts = {})
