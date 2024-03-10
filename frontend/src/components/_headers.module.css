@@ -1,9 +1,10 @@
 .tag {
   position: relative;
   display: inline-block;
+  line-height: 50px;
   height: 63px;
   margin-left: 30px;
-  padding: 1rem 2rem 1rem 3rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
   color: #fff;
   background: #5f5134;
   transform: rotate(-10deg);

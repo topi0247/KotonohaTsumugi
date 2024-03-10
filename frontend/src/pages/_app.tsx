@@ -20,10 +20,8 @@ export default function App({ Component, pageProps }: AppProps) {
           className={`${ShipporiMinchoB1.className} flex max-h-screen overflow-y-hidden`}
         >
           <div className="ml-auto flex flex-col vertical-rl">
-            <header className="w-32">
-              <_Headers />
-            </header>
-            <main className="max-w-[1200px] h-screen m-auto">
+            <_Headers />
+            <main className="max-w-[1100px] w-full h-screen m-auto mr-[26px]">
               <Component {...pageProps} />
             </main>
           </div>

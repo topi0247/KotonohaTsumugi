@@ -1,7 +1,16 @@
 import { useAuth } from "@/providers/auth";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const WriteNew = () => {
-  const { user } = useAuth();
+  const { user, isLogin } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLogin) {
+      router.push("/login");
+    }
+  }, []);
   return (
     <article className="vertical-rl ">
       <div className="relative w-full ml-auto vertical-rl flex flex-col py-10">

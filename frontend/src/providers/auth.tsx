@@ -1,5 +1,11 @@
 // context/AuthContext.tsx
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { getCookie } from "typescript-cookie";
 
 interface User {
@@ -9,6 +15,8 @@ interface User {
 }
 
 interface AuthContextType {
+  user: User | null;
+  isLogin: boolean;
   currentUser: () => Promise<User | null>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -39,9 +47,17 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    currentUser().then((user) => {
+      setUser(user);
+    });
+  }, []);
+
   const currentUser = async () => {
     try {
-      const response = await fetch(`${API_FULL_URL}/current_user/index`, {
+      const response = await fetch(`${API_FULL_URL}/users/current_user/index`, {
         method: "GET",
         credentials: "include",
         headers: new Headers({
@@ -51,13 +67,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           )}`,
         }),
       });
+
       if (!response.ok) {
         throw new Error("ユーザー情報の取得に失敗しました");
       }
-      const user = await response.json();
+
+      let user = await response.json();
+      if (user.id === null) {
+        user = null;
+      }
       return user;
     } catch (error) {
       console.error(error);
+      return null;
     }
   };
 
@@ -77,17 +99,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         throw new Error("ログインに失敗しました");
       }
       const user = await response.json();
-      //setUser(user);
+      setUser(user);
     } catch (error) {
       console.error(error);
     }
   };
 
   const logout = async () => {
-    const response = await fetch(`${API_FULL_URL}/logout`, {
+    const response = await fetch(`${API_URL}/logout`, {
       method: "DELETE",
-      credentials: "include", // クロスオリジンCookieを含める
+      credentials: "include",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: `_relay_writer_session=${getCookie(
+          "_relay_writer_session"
+        )}`,
+      }),
     });
+    if (!response.ok) {
+      throw new Error("ログアウトに失敗しました");
+    }
+    setUser(null);
   };
 
   const signUp = async (
@@ -117,7 +149,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const isLogin = currentUser() !== null;
+
   const value = {
+    user,
+    isLogin,
     currentUser,
     login,
     logout,
