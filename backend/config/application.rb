@@ -31,5 +31,11 @@ module App
     config.time_zone = 'Tokyo'
 		config.active_record.default_timezone = :local
 		config.i18n.default_locale = :ja
+
+    config.generators do |g|
+      g.test_framework false
+    end
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_relay_writer_session'
   end
 end

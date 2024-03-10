@@ -11,10 +11,9 @@ const SignInPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await login(email, password);
-    if (res.status === 200) {
-      router.push("/write/new");
-    }
+    login(email, password).then((res) => {
+      console.log(res);
+    });
   };
 
   return (

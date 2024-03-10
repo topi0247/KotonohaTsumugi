@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { useAuth } from "@/providers/auth";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Write = () => {
+  const { user } = useAuth();
+  const router = useRouter();
   const [text, setText] = useState("");
   const [textCount, setTextCount] = useState(0);
-  const { user } = useAuth();
+
+  useEffect(() => {}, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;

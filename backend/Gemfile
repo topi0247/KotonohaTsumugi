@@ -48,4 +48,7 @@ end
 
 
 gem "dockerfile-rails", ">= 1.6", :group => :development
-gem 'bcrypt'
+gem 'devise'
+gem 'devise-i18n'
+gem 'devise-jwt'
+gem 'jsonapi-serializer'

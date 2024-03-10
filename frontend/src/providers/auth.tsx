@@ -1,104 +1,72 @@
-import React, { createContext, useState, useContext, useCallback } from "react";
-import axios from "axios";
+// context/AuthContext.tsx
+import { createContext, useContext, useState, ReactNode } from "react";
 
-type UserProps = {
+interface User {
   id: number;
   name: string;
   email: string;
-  created_at: string;
-  updated_at: string;
-};
+}
 
-type AuthContextProps = {
-  user: UserProps | null;
-  isLoading: boolean;
-  error: string | null;
-  login: (email: string, password: string) => Promise<{ status: number }>;
+interface AuthContextType {
+  user: User | null;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  signUp: (
-    name: string,
-    email: string,
-    password: string,
-    password_confirmation: string
-  ) => Promise<{ status: number }>;
-};
+}
 
-type AuthProviderProps = {
-  children: React.ReactNode;
-};
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
-const AuthContext = createContext<AuthContextProps | undefined>(undefined);
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_VERSION = process.env.NEXT_PUBLIC_API_VERSION;
+const API_FULL_URL = `${API_URL}/api/v${API_VERSION}`;
 
-export const AuthProvider: React.FunctionComponent<AuthProviderProps> = ({
-  children,
-}) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<UserProps | null>(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-  const login = useCallback(async (email: string, password: string) => {
-    setIsLoading(true);
-    setError(null);
-
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v${process.env.NEXT_PUBLIC_API_VERSION}/login`,
-      { email, password }
-    );
-    if (res.status === 200) {
-      setUser({
-        id: res.data.id,
-        name: res.data.name,
-        email: res.data.email,
-        created_at: res.data.created_at,
-        updated_at: res.data.updated_at,
-      });
-    }
-
-    setIsLoading(false);
-    return { status: res.status };
-  }, []);
-
-  const logout = useCallback(() => {
-    setUser(null);
-  }, []);
-
-  const signUp = useCallback(
-    async (
-      name: string,
-      email: string,
-      password: string,
-      password_confirmation: string
-    ) => {
-      setIsLoading(true);
-      setError(null);
-
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v${process.env.NEXT_PUBLIC_API_VERSION}/users`,
-        { name, email, password, password_confirmation }
-      );
-      if (res.status === 201) {
-        setUser(res.data);
-      }
-
-      setIsLoading(false);
-      return { status: res.status };
-    },
-    []
-  );
-
-  return (
-    <AuthContext.Provider
-      value={{ user, isLoading, error, login, logout, signUp }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-export const useAuth = (): AuthContextProps => {
+export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
+};
+
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [user, setUser] = useState<any>(null);
+
+  const login = async (email: string, password: string) => {
+    const response = await fetch(`${API_FULL_URL}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+      throw new Error("ログインに失敗しました");
+    }
+
+    const user = await response.json();
+    console.log(user);
+    //setUser(user);
+  };
+
+  const logout = async () => {
+    const response = await fetch(`${API_FULL_URL}/logout`, {
+      method: "DELETE",
+      credentials: "include", // クロスオリジンCookieを含める
+    });
+    console.log(response);
+    setUser(null);
+  };
+
+  const value = {
+    user,
+    login,
+    logout,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
