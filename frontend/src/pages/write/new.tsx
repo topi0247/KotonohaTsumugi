@@ -3,14 +3,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const WriteNew = () => {
-  const { user, isLogin } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLogin) {
+    if (!user) {
       router.push("/login");
     }
-  }, []);
+  }, [user]);
   return (
     <article className="vertical-rl ">
       <div className="relative w-full ml-auto vertical-rl flex flex-col py-10">

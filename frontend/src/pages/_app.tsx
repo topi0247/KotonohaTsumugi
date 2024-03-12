@@ -5,6 +5,7 @@ import theme from "@/styles/theme";
 import { ThemeProvider } from "@mui/material";
 import { _Headers } from "@/components/_headers";
 import { AuthProvider } from "@/providers/auth";
+import { useEffect, useRef } from "react";
 
 const ShipporiMinchoB1 = Shippori_Mincho_B1({
   weight: "400",
@@ -13,20 +14,38 @@ const ShipporiMinchoB1 = Shippori_Mincho_B1({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const screenRef = useRef<HTMLDivElement>(null);
+  // useEffect(() => {
+  //   screenRef.current!.onwheel = (e) => {
+  //     e.preventDefault();
+
+  //     let delta = (-e.deltaY / Math.abs(e.deltaY)) * window.innerWidth;
+  //     if (delta > 0) {
+  //       delta += screenRef.current!.scrollLeft;
+  //       delta = Math.floor(delta / window.innerWidth) * window.innerWidth;
+  //     } else {
+  //       delta += screenRef.current!.scrollLeft;
+  //       delta = Math.ceil(delta / window.innerWidth) * window.innerWidth;
+  //     }
+  //     screenRef.current!.scrollLeft = delta;
+  //   };
+  // }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <div
-          className={`${ShipporiMinchoB1.className} flex max-h-screen overflow-y-hidden`}
-        >
-          <div className="ml-auto flex flex-col vertical-rl">
+        <div className={`${ShipporiMinchoB1.className} flex max-h-screen`}>
+          <div
+            ref={screenRef}
+            className="ml-auto flex flex-col vertical-rl w-full hidden-scrollbar"
+          >
             <_Headers />
-            <main className="max-w-[1100px] w-full h-screen m-auto mr-[26px]">
+            <main className="h-screen m-auto">
               <Component {...pageProps} />
             </main>
           </div>
-          <footer className="fixed bottom-0 w-full flex justify-center items-center">
-            ©ことのはつむぎ
+          <footer className="fixed bottom-0 w-full flex justify-center items-center mb-4 bg-white ">
+            ©言の葉つむぎ
           </footer>
         </div>
       </AuthProvider>

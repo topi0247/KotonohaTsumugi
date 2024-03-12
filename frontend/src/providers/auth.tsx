@@ -1,4 +1,5 @@
 // context/AuthContext.tsx
+import { FlashOnRounded } from "@mui/icons-material";
 import {
   createContext,
   useContext,
@@ -6,7 +7,7 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { getCookie } from "typescript-cookie";
+import { getCookie, setCookie } from "typescript-cookie";
 
 interface User {
   id: number;
@@ -48,15 +49,18 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLogin, setIsLogin] = useState(user !== null);
 
   useEffect(() => {
-    currentUser().then((user) => {
-      setUser(user);
-    });
-  }, []);
+    setIsLogin(user !== null);
+  }, [user]);
 
   const currentUser = async () => {
     try {
+      if (!getCookie("_relay_writer_session")) {
+        return null;
+      }
+
       const response = await fetch(`${API_FULL_URL}/users/current_user/index`, {
         method: "GET",
         credentials: "include",
@@ -68,15 +72,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("ユーザー情報の取得に失敗しました");
+      const resJson = await response.json();
+
+      if (!resJson) {
+        return null;
       }
 
-      let user = await response.json();
-      if (user.id === null) {
-        user = null;
-      }
-      return user;
+      setUser(resJson.data);
+      return resJson.data;
     } catch (error) {
       console.error(error);
       return null;
@@ -94,32 +97,43 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         body: JSON.stringify({ email, password }),
       });
 
-      console.log(response);
-      if (!response.ok) {
-        throw new Error("ログインに失敗しました");
+      const resJson = await response.json();
+      const data = resJson.data;
+      const status = resJson.status;
+
+      if (status.code !== 200) {
+        return null;
       }
-      const user = await response.json();
-      setUser(user);
+
+      setUser(data);
+      return data;
     } catch (error) {
       console.error(error);
+      return null;
     }
   };
 
   const logout = async () => {
-    const response = await fetch(`${API_URL}/logout`, {
-      method: "DELETE",
-      credentials: "include",
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: `_relay_writer_session=${getCookie(
-          "_relay_writer_session"
-        )}`,
-      }),
-    });
-    if (!response.ok) {
-      throw new Error("ログアウトに失敗しました");
+    try {
+      const response = await fetch(`${API_URL}/logout`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: `_relay_writer_session=${getCookie(
+            "_relay_writer_session"
+          )}`,
+        }),
+      });
+      console.log(response);
+      if (!response.ok) {
+        throw new Error("ログアウトに失敗しました");
+      }
+      setCookie("_relay_writer_session", "", { expires: new Date(0) });
+      setUser(null);
+    } catch (error) {
+      console.error(error);
     }
-    setUser(null);
   };
 
   const signUp = async (
@@ -143,13 +157,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         throw new Error("登録に失敗しました");
       }
       const user = await response.json();
-      //setUser(user);
+      setUser(user);
     } catch (error) {
       console.error(error);
     }
   };
-
-  const isLogin = currentUser() !== null;
 
   const value = {
     user,

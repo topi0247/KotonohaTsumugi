@@ -15,9 +15,13 @@ const config: Config = {
         },
         ".vertical-rl": {
           writingMode: "vertical-rl",
+          "-ms-writing-mode": "tb-rl",
         },
         ".vertical-lr": {
           writingMode: "vertical-lr",
+        },
+        ".rtl": {
+          direction: "rtl",
         },
       };
       addUtilities(newUtilities);

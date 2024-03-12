@@ -23,7 +23,7 @@ const SignUp = () => {
   };
 
   return (
-    <article className="h-full w-full flex justify-center items-center pb-32 horizontal-tb">
+    <article className="absolute right-0 h-full w-screen mx-auto flex justify-center items-center pb-32 horizontal-tb">
       <div>
         <h2 className="text-2xl m-4 text-center">初めて綴る</h2>
         <section className="bg-white p-5 w-[400px] m-auto">
