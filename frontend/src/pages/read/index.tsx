@@ -123,18 +123,20 @@ const ReadIndex = () => {
             {novel.ssnovel_bodies[1] && (
               <div className="bg-blue-100 absolute top-0 right-0 w-full h-full transition-all shadow-md page2" />
             )}
-            <div className="bg-white absolute top-0 right-0 h-full w-hull flex flex-col gap-3 justify-start p-4 w-full shadow-sm hover:rotate-[3deg] transition-all page1">
+            <div className="bg-white absolute top-0 right-0 h-full w-hull flex flex-col gap-3 justify-start p-4 w-full shadow-sm hover:rotate-[3deg] transition-all page1 pb-8">
               <h3 className="text-2xl text-start">{novel.title}</h3>
               <div className="text-end pb-3">
                 <p className="text-xl">{novel.ssnovel_bodies[0].user.name}</p>
-                <p>{novel.created_at}</p>
-                <p>{novel.updated_at}</p>
               </div>
               <p
                 className={`text-clip overflow-hidden gradient-text ${style.gradientText}`}
               >
                 {novel.ssnovel_bodies[0].content}
               </p>
+              <div className="horizontal-tb absolute bottom-0 left-0 flex gap-2 text-sm justify-start items-end text-start p-2 text-gray-400">
+                <p>作成日 {novel.created_at}</p>
+                <p>更新日 {novel.updated_at}</p>
+              </div>
             </div>
           </section>
         ))}

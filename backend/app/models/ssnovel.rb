@@ -19,10 +19,10 @@ class Ssnovel < ApplicationRecord
   end
 
   def created_at
-    attributes['created_at'].strftime('%Y年%m月%d日 %H時%M分')
+    attributes['created_at'].strftime('%Y/%m/%d %H:%M')
   end
 
   def updated_at
-    attributes['updated_at'].strftime('%Y年%m月%d日 %H時%M分')
+    attributes['updated_at'].strftime('%Y/%m/%d %H:%M')
   end
 end
