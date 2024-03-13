@@ -1,5 +1,3 @@
-// context/AuthContext.tsx
-import { FlashOnRounded } from "@mui/icons-material";
 import {
   createContext,
   useContext,

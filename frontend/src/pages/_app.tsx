@@ -15,22 +15,6 @@ const ShipporiMinchoB1 = Shippori_Mincho_B1({
 
 export default function App({ Component, pageProps }: AppProps) {
   const screenRef = useRef<HTMLDivElement>(null);
-  // useEffect(() => {
-  //   screenRef.current!.onwheel = (e) => {
-  //     e.preventDefault();
-
-  //     let delta = (-e.deltaY / Math.abs(e.deltaY)) * window.innerWidth;
-  //     if (delta > 0) {
-  //       delta += screenRef.current!.scrollLeft;
-  //       delta = Math.floor(delta / window.innerWidth) * window.innerWidth;
-  //     } else {
-  //       delta += screenRef.current!.scrollLeft;
-  //       delta = Math.ceil(delta / window.innerWidth) * window.innerWidth;
-  //     }
-  //     screenRef.current!.scrollLeft = delta;
-  //   };
-  // }, []);
-
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
@@ -40,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
             className="ml-auto flex flex-col vertical-rl w-full hidden-scrollbar"
           >
             <_Headers />
-            <main className="h-screen m-auto">
+            <main className="m-auto mb-32">
               <Component {...pageProps} />
             </main>
           </div>

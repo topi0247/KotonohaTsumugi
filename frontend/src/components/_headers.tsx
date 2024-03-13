@@ -8,7 +8,7 @@ export const _Headers = () => {
   const router = useRouter();
 
   return (
-    <header className="w-32 z-10">
+    <header className="w-32 z-10 fixed">
       <div>
         <h1 className="text-3xl mt-32 mx-12">言の葉つむぎ</h1>
         <nav className="fixed right-[-35px] h-full flex justify-center items-center mt-32">

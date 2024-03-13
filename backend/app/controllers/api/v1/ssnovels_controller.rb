@@ -1,7 +1,7 @@
 class Api::V1::SsnovelsController < ApplicationController
   def index
-    @ssnovels = Ssnovel.all
-    render json: @ssnovels
+    @ssnovels = Ssnovel.includes(ssnovel_bodies: :user).all
+    render json: @ssnovels.map(&:as_custom_json)
   end
 
   def show
