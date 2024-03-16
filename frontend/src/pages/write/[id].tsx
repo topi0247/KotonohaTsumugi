@@ -162,7 +162,7 @@ const WriteContinue = () => {
               />
             </div>
           </div>
-          <div className="w-full h-full absolute sm:right-10 lg:right-0">
+          <div>
             {ssnovel.ssnovel_bodies.map((ssnovelBody, index) => {
               return (
                 <Page
@@ -178,7 +178,10 @@ const WriteContinue = () => {
             })}
           </div>
         </section>
-        <div className="col-span-1 w-full mx-auto my-10 horizontal-tb flex flex-col justify-center items-center gap-3">
+        <div className="col-span-1 w-full mx-auto mt-10 horizontal-tb flex justify-center items-center gap-3">
+          <Button variant="outlined" type="button">
+            読み返す
+          </Button>
           <Button variant="outlined" type="button" onClick={handleClick}>
             続きを紡いだ
           </Button>

@@ -21,11 +21,11 @@ export default function App({ Component, pageProps }: AppProps) {
           className="ml-auto flex flex-col vertical-rl w-full hidden-scrollbar"
         >
           <_Headers />
-          <main className="w-full mb-32">
+          <main className="w-full">
             <Component {...pageProps} />
           </main>
         </div>
-        <footer className="fixed bottom-0 w-full flex justify-center items-center mb-4 bg-white ">
+        <footer className="fixed bottom-0 w-full flex justify-end items-center p-4">
           ©言の葉つむぎ
         </footer>
       </div>
