@@ -60,7 +60,7 @@ export const Reading = ({
             <h2 className="text-4xl">{novel.title}</h2>
             <p className="text-end text-2xl">{ssnovelBodies[0].user.name}</p>
             <h3 className="mt-10 text-3xl text-gray-500">起</h3>
-            <p className="mx-6 tracking-[0.25em] leading-10 text-2xl mt-4">
+            <p className="mx-6 tracking-[0.25em] leading-10 text-2xl mt-4 whitespace-pre-wrap">
               {ssnovelBodies[0].content}
             </p>
             <div className="horizontal-tb absolute bottom-0 left-0 flex gap-2 text-sm justify-start items-end text-start p-2 text-gray-400">

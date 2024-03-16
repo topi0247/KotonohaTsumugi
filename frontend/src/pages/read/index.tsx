@@ -104,7 +104,7 @@ const ReadIndex = () => {
                   <p className="text-xl">{novel.ssnovel_bodies[0].user.name}</p>
                 </div>
                 <p
-                  className={`text-clip overflow-hidden gradient-text ${style.gradientText}`}
+                  className={`text-clip overflow-hidden gradient-text whitespace-pre-wrap ${style.gradientText}`}
                 >
                   {novel.ssnovel_bodies[0].content}
                 </p>
