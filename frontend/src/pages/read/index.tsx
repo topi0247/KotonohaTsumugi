@@ -82,7 +82,7 @@ const ReadIndex = () => {
   return (
     <>
       <article className="w-full mx-auto my-32 mr-16 horizontal-tb">
-        <div className="w-full max-w-[1000px] m-auto grid grid-cols-2 gap-x-6 gap-y-8 ">
+        <div className="w-full max-w-[1000px] m-auto  gap-x-6 gap-y-8 flex flex-row-reverse">
           {novels.map((novel, index) => (
             <section
               key={index}

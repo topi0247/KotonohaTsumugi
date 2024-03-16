@@ -35,25 +35,14 @@ export const Reading = ({
 
   useEffect(() => {
     fetchData();
-
-    const el = document.getElementById("novel_body");
-    if (!el) return;
-
-    el.addEventListener("click", handleClick);
-
-    return () => {
-      el.removeEventListener("click", handleClick);
-    };
   }, [fetchData]);
 
   useEffect(() => {
     if (ssnovelBodies.length > 0) setLoading(false);
   }, [ssnovelBodies]);
 
-  const handleClick = (event: MouseEvent) => {
-    const clicked = event.target as HTMLElement;
-    console.log(clicked);
-    if (clicked.id === "novel_body") toggleReading();
+  const handleClick = () => {
+    toggleReading();
   };
 
   return (
@@ -79,6 +68,15 @@ export const Reading = ({
               <p>更新日 {novel.updated_at}</p>
             </div>
           </section>
+          <div className="w-[1000px] flex justify-center items-center">
+            <button
+              className="border border-green-400 bg-green-300 bg-opacity-20 hover:bg-opacity-40 transition-all horizontal-tb w-full p-4 my-4 text-white flex justify-center items-center"
+              onClick={handleClick}
+            >
+              <span className="pr-32">戻</span>
+              <span className="pl-32">す</span>
+            </button>
+          </div>
         </article>
       )}
     </>
