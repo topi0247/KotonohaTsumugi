@@ -125,11 +125,11 @@ const WriteContinue = () => {
   const getRotate = (index: number) => {
     switch (index) {
       case 0:
-        return 4;
+        return 6;
       case 1:
-        return 0;
+        return 2;
       case 2:
-        return -4;
+        return -2;
       default:
         return 0;
     }
@@ -169,9 +169,9 @@ const WriteContinue = () => {
                   key={index}
                   ssnovelBody={ssnovelBody}
                   bgColor={getBgColor(index)}
+                  rotate={getRotate(index)}
                   style={{
                     right: `${1160 + index * 50}px`,
-                    rotate: `${getRotate(index)}deg`,
                   }}
                 />
               );

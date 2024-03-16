@@ -1,38 +1,49 @@
 import { NarrativeType, SSNovelBody } from "@/types/typs";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { memo, useState } from "react";
+import { memo, use, useEffect, useState } from "react";
 
 export const Page = memo(
   ({
     ssnovelBody,
     bgColor,
+    rotate,
     style,
   }: {
     ssnovelBody: SSNovelBody;
-    bgColor: string;
+    rotate: Number;
+    bgColor: String;
     style?: React.CSSProperties;
   }) => {
     const [movePage, setMovePage] = useState(0);
+    const [initialRotate, setInitialRotate] = useState(rotate);
+    const [rotatePage, setRotatePage] = useState(initialRotate);
     const [readPage, setReadPage] = useState(false);
 
     const handleClick = () => {
-      setMovePage(100);
+      setMovePage(1000);
       setReadPage(true);
+      setRotatePage(0);
     };
 
     const handleBack = () => {
-      setMovePage(-100);
+      setMovePage(0);
       setReadPage(false);
+      setRotatePage(initialRotate);
     };
 
     return (
       <>
         <section
-          className={`absolute h-[630px] shadow-md hover:translate-x-10 transition-all cursor-pointer p-4 ${bgColor}`}
-          style={{ ...style, transform: `translateX(${movePage}%)` }}
-          onClick={handleClick}
+          className={`absolute w-[780px] h-[630px] shadow-md hover:translate-x-10 transition-all p-4 ${bgColor}`}
+          style={{
+            ...style,
+            transform: `translateX(${movePage}px) rotate(${rotatePage}deg)`,
+          }}
         >
-          <div className="flex justify-between p-2">
+          <div
+            className="flex justify-between p-2 cursor-pointer "
+            onClick={handleClick}
+          >
             <h2 className="text-2xl">
               {
                 NarrativeType[
@@ -47,19 +58,19 @@ export const Page = memo(
               {ssnovelBody.content}
             </p>
           </div>
-        </section>
-        <div
-          className={`absolute bottom-0 right-1/2  ${
-            readPage ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <button
-            className={`border hover:border-slate-300 hover:${bgColor} bg-opacity-20 hover:bg-opacity-70 transition-all w-full p-4 my-4 text-gray-600 flex flex-col justify-between items-center tracking-[32px] gap-2 ${bgColor} text-slate-500`}
-            onClick={handleBack}
+          <div
+            className={`absolute bottom-[-80px] left-4  ${
+              readPage ? "opacity-100" : "opacity-0"
+            }`}
           >
-            <ArrowBackIosNewIcon />
-          </button>
-        </div>
+            <button
+              className={`border hover:border-slate-300 hover:${bgColor} bg-opacity-20 hover:bg-opacity-70 transition-all w-full p-2 my-2 text-gray-600 flex flex-col justify-between items-center tracking-[32px] gap-2 ${bgColor} text-slate-500`}
+              onClick={handleBack}
+            >
+              <ArrowBackIosNewIcon />
+            </button>
+          </div>
+        </section>
       </>
     );
   }
