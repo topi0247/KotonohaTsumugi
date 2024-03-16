@@ -1,3 +1,4 @@
+import { User } from "@/types/typs";
 import {
   createContext,
   useContext,
@@ -6,16 +7,10 @@ import {
   useEffect,
 } from "react";
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
-  currentUser: () => Promise<number | undefined>;
+  currentUser: () => Promise<User | undefined>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   signUp: (
@@ -62,7 +57,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const currentUser = async () => {
     try {
-      const response = await fetch(`${API_FULL_URL}/current_user`, {
+      const response = await fetch(`${API_FULL_URL}/users/current_user`, {
         method: "GET",
         credentials: "include",
         headers: new Headers({
@@ -71,10 +66,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       });
       const data = await response.json();
       setUser(data);
-      localStorage.setItem("auth", "true");
+      setIsLoggedIn(true);
       return data;
     } catch (error) {
       console.error(error);
+      return null;
     }
   };
 

@@ -9,10 +9,6 @@ class Api::V1::SsnovelsController < ApplicationController
     render json: ssnovel.as_custom_json
   end
 
-  def create
-    
-  end
-
   private
 
   def ssnovel_params

@@ -1,13 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { useAuth } from "@/providers/auth";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
+import { User } from "@/types/typs";
+import { Button } from "@mui/material";
 
 const Write = () => {
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
+  const [user, setUser] = useState({} as User);
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [textCount, setTextCount] = useState(0);
+  const router = useRouter();
+
+  useEffect(() => {
+    currentUser().then((data) => {
+      if (data) {
+        setUser(data);
+      } else {
+        router.push("/login");
+      }
+    });
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -15,12 +29,36 @@ const Write = () => {
     setTextCount(text.length);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {};
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const body = {
+      title: title,
+      content: text,
+      narrative_stage: 0,
+    };
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/ssnovel_bodies`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify({ ssnovel_body: body }),
+      }
+    );
+
+    if (response.status === 201) {
+      router.push("/read");
+    } else {
+      alert("投稿に失敗しました");
+    }
+  };
 
   return (
-    <article className="mr-32 w-full">
-      <section className="relative w-full ml-auto flex flex-col py-10">
-        <div className="text-4xl mx-1 flex justify-between items-center">
+    <article className="mr-32 w-full grid grid-cols-5">
+      <section className="col-span-4 w-full ml-auto flex flex-col py-10 relative">
+        <div className="text-4xl mx-1 flex justify-between items-center h-full">
           <input
             type="text"
             placeholder="タイトル"
@@ -42,7 +80,10 @@ const Write = () => {
           />
         </div>
       </section>
-      <div className="horizontal-tb my-10 mr-[10px]">
+      <div className="col-span-1 w-full max-w-[1100px] my-10 horizontal-tb flex flex-col justify-center items-center gap-3">
+        <Button variant="outlined" type="button" onClick={handleClick}>
+          紡いだ
+        </Button>
         <p>文字数：{textCount} / 400</p>
       </div>
     </article>

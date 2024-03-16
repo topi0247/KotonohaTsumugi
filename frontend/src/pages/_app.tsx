@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
             className="ml-auto flex flex-col vertical-rl w-full hidden-scrollbar"
           >
             <_Headers />
-            <main className="mb-32">
+            <main className="w-full mb-32">
               <Component {...pageProps} />
             </main>
           </div>
