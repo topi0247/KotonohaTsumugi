@@ -1,72 +1,39 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import style from "./index.module.css";
 import { getCookie } from "typescript-cookie";
-
-const data = {
-  id: 1,
-  title: "タイトル",
-  username: "ユーザー名",
-  created_at: "作成日",
-  updated_at: "更新日",
-  content:
-    "本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文",
-  pages: 1,
-};
-
-const novelsData = Array(50).fill(data);
-
-type User = {
-  id: number;
-  name: string;
-};
-
-type SSNovelBody = {
-  id: number;
-  content: string;
-  created_at: string;
-  narrative_stage: string;
-  user: User;
-};
-
-type SSNovel = {
-  id: number;
-  title: string;
-  username: string;
-  created_at: string;
-  updated_at: string;
-  ssnovel_bodies: SSNovelBody[];
-};
+import { Reading } from "./reading";
+import { SSNovel } from "@/types/typs";
 
 const ReadIndex = () => {
   const [novels, setNovels] = useState([] as SSNovel[]);
+  const [readingId, setReadingId] = useState(0);
+  const [isReading, setIsReading] = useState(false);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/ssnovels`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authorization: `_relay_writer_session=${getCookie(
+              "_relay_writer_session"
+            )}`,
+          }),
+        }
+      );
+      const data = await response.json();
+      setNovels(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/ssnovels`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: new Headers({
-              "Content-Type": "application/json",
-              Authorization: `_relay_writer_session=${getCookie(
-                "_relay_writer_session"
-              )}`,
-            }),
-          }
-        );
-        const data = await response.json();
-        setNovels(data);
-
-        console.log(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   useEffect(() => {
     if (novels.length === 0) return;
@@ -106,13 +73,24 @@ const ReadIndex = () => {
     };
   }, [novels]);
 
+  const handleClick = (id: number) => {
+    setReadingId(id);
+    setIsReading(true);
+  };
+
+  const toggleReading = () => {
+    setIsReading(!isReading);
+    if (!isReading) setReadingId(0);
+  };
+
   return (
     <>
       <article className="mx-5 my-32 grid grid-cols-2 gap-6 gap-y-8 horizontal-tb">
         {novels.map((novel, index) => (
           <section
             key={index}
-            className="relative w-[500px] aspect-video vertical-rl"
+            className="relative w-[500px] aspect-video vertical-rl cursor-pointer"
+            onClick={() => handleClick(novel.id)}
           >
             {novel.ssnovel_bodies[3] && (
               <div className="bg-red-100 absolute top-0 right-0  w-full h-full page4 transition-all shadow-lg" />
@@ -141,18 +119,7 @@ const ReadIndex = () => {
           </section>
         ))}
       </article>
-      {/* <article className="fixed w-full h-full z-10 right-0 top-0 flex justify-center items-center bg-black bg-opacity-30">
-        <section className="bg-white max-w-[1200px] w-full aspect-video p-4 px-8 flex flex-col justify-center">
-          <h2 className="text-4xl">タイトル</h2>
-          <p className="text-end text-2xl">ユーザー名</p>
-          <p className="text-end text-2xl">作成日</p>
-          <p className="text-end text-2xl">更新日</p>
-          <h3 className="mt-10 text-3xl text-gray-500">起</h3>
-          <p className="mx-6 tracking-[0.25em] leading-10 text-2xl mt-4">
-            本文
-          </p>
-        </section>
-      </article> */}
+      {isReading && <Reading toggleReading={toggleReading} id={readingId} />}
     </>
   );
 };

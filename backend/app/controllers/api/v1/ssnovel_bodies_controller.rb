@@ -1,17 +1,27 @@
-class Api::V1::SsnovelBodyController < ApplicationController
+class Api::V1::SsnovelBodiesController < ApplicationController
   def create
-    ssnovel_body = SsnovelBody.new(ssnovel_body_params)
+    ssnovel_body = SsnovelBody.new(content: ssnovel_body_params[:content], narrative_stage: ssnovel_body_params[:narrative_stage])
+    ssnovel_body.user = current_user
 
-    if ssnovel_body.save
-      render json: { message: 'Ssnovel body created successfully' }, status: :created
+    # リファクタリングはあと
+    if ssnovel_body_params[:title].present?
+      ssnovel = Ssnovel.find_or_create_by(title: ssnovel_body_params[:title])
     else
-      render json: { error: 'Failed to create ssnovel body' }, status: :unprocessable_entity
+      ssnovel = Ssnovel.find_(ssnovel_body_params[:ssnovel_id])
+    end
+
+    ssnovel_body.ssnovel = ssnovel
+
+    if ssnovel_body.valid? && ssnovel_body.save
+      render status: :created
+    else
+      render status: :bad_request
     end
   end
 
   private
 
   def ssnovel_body_params
-    params.permit(:content, :narrative_stage, :ssnovel_id, :user_id)
+    params.require(:ssnovel_body).permit(:content, :narrative_stage, :ssnovel_id, :title)
   end
 end
