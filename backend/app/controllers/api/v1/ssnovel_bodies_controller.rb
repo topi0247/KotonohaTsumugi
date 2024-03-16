@@ -7,7 +7,7 @@ class Api::V1::SsnovelBodiesController < ApplicationController
     if ssnovel_body_params[:title].present?
       ssnovel = Ssnovel.find_or_create_by(title: ssnovel_body_params[:title])
     else
-      ssnovel = Ssnovel.find_(ssnovel_body_params[:ssnovel_id])
+      ssnovel = Ssnovel.find(ssnovel_body_params[:ssnovel_id])
     end
 
     ssnovel_body.ssnovel = ssnovel

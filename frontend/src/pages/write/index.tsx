@@ -71,9 +71,9 @@ const Write = () => {
           <h3 className="text-3xl">起</h3>
           <h3 className="text-end text-2xl">{user?.name}</h3>
         </div>
-        <div className="mx-5 max-w-[1000px] w-full p-5 bg-white">
+        <div className="mx-5 max-w-[1000px] h-[600px] m-auto w-full p-5 bg-white">
           <textarea
-            className="resize-none leading-[calc(24px+25px)] h-[600px] focus:outline-none text-2xl tracking-widest px-3 overflow-hidden w-full break-all"
+            className="resize-none leading-[calc(24px+25px)] focus:outline-none text-2xl tracking-widest px-3 overflow-hidden w-full break-all"
             onChange={handleChange}
             value={text}
             placeholder="徒然なるままに"

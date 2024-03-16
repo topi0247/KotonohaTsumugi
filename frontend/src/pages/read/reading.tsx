@@ -1,5 +1,6 @@
 import { useRead } from "@/providers/reading";
 import { SSNovel, SSNovelBody } from "@/types/typs";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 export const Reading = ({ id }: { id: number }) => {
@@ -7,6 +8,7 @@ export const Reading = ({ id }: { id: number }) => {
   const [ssnovelBodies, setSSNovelBodies] = useState([] as SSNovelBody[]);
   const [loading, setLoading] = useState(true);
   const { setIsReading } = useRead();
+  const router = useRouter();
 
   const fetchData = useCallback(async () => {
     try {
@@ -21,7 +23,6 @@ export const Reading = ({ id }: { id: number }) => {
         }
       );
       const data = await response.json();
-      console.log(data);
       setNovel(data);
       setSSNovelBodies(data.ssnovel_bodies);
     } catch (error) {
@@ -39,6 +40,7 @@ export const Reading = ({ id }: { id: number }) => {
 
   const handleClick = () => {
     setIsReading(false);
+    router.push(`/write/${id}`);
   };
 
   return (
@@ -65,7 +67,7 @@ export const Reading = ({ id }: { id: number }) => {
             </div>
             <div className="flex justify-center items-center mr-16">
               <button
-                className="border border-green-400 bg-green-300 bg-opacity-20 hover:bg-opacity-40 transition-all w-full p-4 my-4 text-white flex justify-between items-center tracking-[32px]"
+                className="border hover:border-green-400 hover:bg-green-300 bg-opacity-20 hover:bg-opacity-10 transition-all w-full p-4 my-4 text-white flex justify-between items-center tracking-[32px]"
                 onClick={handleClick}
               >
                 続きを紡ぐ
@@ -74,7 +76,7 @@ export const Reading = ({ id }: { id: number }) => {
           </section>
           <div className="w-[1000px] flex justify-center items-center">
             <button
-              className="border border-transparent hover:border-amber-950 hover:border-opacity-20 hover:bg-amber-950 hover:bg-opacity-10 transition-all horizontal-tb w-full p-4 my-4 text-white flex justify-center items-center"
+              className="border border-transparent hover:border-slate-800 hover:border-opacity-20 hover:bg-slate-500 hover:bg-opacity-10 transition-all horizontal-tb w-full p-4 my-4 text-white flex justify-center items-center"
               onClick={handleClick}
             >
               <span className="pr-32">戻</span>
