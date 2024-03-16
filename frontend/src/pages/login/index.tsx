@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Button, TextField } from "@mui/material";
 import { useAuth } from "@/providers/auth";
-import { _FlashMessages } from "@/components/_flash_messages";
+import { _FlashMessages } from "@/pages/components/_flash_messages";
 import Link from "next/link";
 
 const LoginPage = () => {

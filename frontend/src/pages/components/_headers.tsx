@@ -1,11 +1,19 @@
 import Link from "next/link";
 import style from "./_headers.module.css";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/providers/auth";
-import { useRouter } from "next/router";
 
 export const _Headers = () => {
-  const { isLogin } = useAuth();
-  const router = useRouter();
+  const { isLoggedIn } = useAuth();
+  const [login, setLogin] = useState(false);
+
+  useEffect(() => {
+    setLogin(isLoggedIn);
+  }, []);
+
+  useEffect(() => {
+    setLogin(isLoggedIn);
+  }, [isLoggedIn]);
 
   return (
     <header className="w-32 z-10 fixed">
@@ -18,7 +26,7 @@ export const _Headers = () => {
                 書庫
               </Link>
             </li>
-            {isLogin ? (
+            {login ? (
               <>
                 <li className="transition-transform duration-50 ease-in-out hover:translate-x-[-50px] hover:translate-y-[10px]">
                   <Link href="/write" className={style.tag}>

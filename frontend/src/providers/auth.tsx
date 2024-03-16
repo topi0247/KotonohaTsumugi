@@ -5,7 +5,6 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { getCookie, setCookie } from "typescript-cookie";
 
 interface User {
   id: number;
@@ -15,8 +14,8 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  isLogin: boolean;
-  currentUser: () => Promise<User | null>;
+  isLoggedIn: boolean;
+  currentUser: () => Promise<number | undefined>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   signUp: (
@@ -47,40 +46,35 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLogin, setIsLogin] = useState(user !== null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    setIsLogin(user !== null);
-  }, [user]);
+    localStorage.getItem("auth") && setIsLoggedIn(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      localStorage.setItem("auth", "true");
+      return;
+    }
+    localStorage.removeItem("auth");
+  }, [isLoggedIn]);
 
   const currentUser = async () => {
     try {
-      if (!getCookie("_relay_writer_session")) {
-        return null;
-      }
-
-      const response = await fetch(`${API_FULL_URL}/users/current_user/index`, {
+      const response = await fetch(`${API_FULL_URL}/current_user`, {
         method: "GET",
         credentials: "include",
         headers: new Headers({
           "Content-Type": "application/json",
-          Authorization: `_relay_writer_session=${getCookie(
-            "_relay_writer_session"
-          )}`,
         }),
       });
-
-      const resJson = await response.json();
-
-      if (!resJson) {
-        return null;
-      }
-
-      setUser(resJson.data);
-      return resJson.data;
+      const data = await response.json();
+      setUser(data);
+      localStorage.setItem("auth", "true");
+      return data;
     } catch (error) {
       console.error(error);
-      return null;
     }
   };
 
@@ -104,6 +98,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
 
       setUser(data);
+      setIsLoggedIn(true);
       return data;
     } catch (error) {
       console.error(error);
@@ -118,17 +113,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         credentials: "include",
         headers: new Headers({
           "Content-Type": "application/json",
-          Authorization: `_relay_writer_session=${getCookie(
-            "_relay_writer_session"
-          )}`,
         }),
       });
       console.log(response);
       if (!response.ok) {
         throw new Error("ログアウトに失敗しました");
       }
-      setCookie("_relay_writer_session", "", { expires: new Date(0) });
       setUser(null);
+      setIsLoggedIn(false);
     } catch (error) {
       console.error(error);
     }
@@ -156,6 +148,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
       const user = await response.json();
       setUser(user);
+      setIsLoggedIn(true);
     } catch (error) {
       console.error(error);
     }
@@ -163,7 +156,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const value = {
     user,
-    isLogin,
+    isLoggedIn,
     currentUser,
     login,
     logout,

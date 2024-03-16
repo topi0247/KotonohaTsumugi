@@ -1,6 +1,5 @@
 import { SSNovel, SSNovelBody } from "@/types/typs";
 import { useCallback, useEffect, useState } from "react";
-import { getCookie } from "typescript-cookie";
 
 export const Reading = ({
   toggleReading,
@@ -22,9 +21,6 @@ export const Reading = ({
           credentials: "include",
           headers: new Headers({
             "Content-Type": "application/json",
-            Authorization: `_relay_writer_session=${getCookie(
-              "_relay_writer_session"
-            )}`,
           }),
         }
       );

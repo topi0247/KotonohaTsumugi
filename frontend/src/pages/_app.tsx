@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import { Shippori_Mincho_B1 } from "next/font/google";
 import theme from "@/styles/theme";
 import { ThemeProvider } from "@mui/material";
-import { _Headers } from "@/components/_headers";
+import { _Headers } from "@/pages/components/_headers";
 import { AuthProvider } from "@/providers/auth";
 import { useEffect, useRef } from "react";
 
@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
             className="ml-auto flex flex-col vertical-rl w-full hidden-scrollbar"
           >
             <_Headers />
-            <main className="m-auto mb-32">
+            <main className="mb-32">
               <Component {...pageProps} />
             </main>
           </div>
