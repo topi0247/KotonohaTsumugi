@@ -2,11 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import style from "./index.module.css";
 import { Reading } from "./reading";
 import { SSNovel } from "@/types/typs";
+import { useRead } from "@/providers/reading";
 
 const ReadIndex = () => {
+  const { isReading, setIsReading } = useRead();
   const [novels, setNovels] = useState([] as SSNovel[]);
   const [readingId, setReadingId] = useState(0);
-  const [isReading, setIsReading] = useState(false);
 
   const fetchData = useCallback(async () => {
     try {
@@ -74,14 +75,13 @@ const ReadIndex = () => {
     setIsReading(true);
   };
 
-  const toggleReading = () => {
-    setIsReading(!isReading);
-    if (!isReading) setReadingId(0);
-  };
-
   return (
     <>
-      <article className="w-full mx-auto my-32 mr-16 horizontal-tb">
+      <article
+        className={`w-full mx-auto my-32 mr-16 horizontal-tb transition-all ${
+          isReading ? "blur-sm" : ""
+        }`}
+      >
         <div className="w-full max-w-[1000px] m-auto  gap-x-6 gap-y-8 flex flex-row-reverse">
           {novels.map((novel, index) => (
             <section
@@ -117,7 +117,7 @@ const ReadIndex = () => {
           ))}
         </div>
       </article>
-      {isReading && <Reading toggleReading={toggleReading} id={readingId} />}
+      {isReading && <Reading id={readingId} />}
     </>
   );
 };

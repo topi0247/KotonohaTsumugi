@@ -1,16 +1,12 @@
+import { useRead } from "@/providers/reading";
 import { SSNovel, SSNovelBody } from "@/types/typs";
 import { useCallback, useEffect, useState } from "react";
 
-export const Reading = ({
-  toggleReading,
-  id,
-}: {
-  toggleReading: () => void;
-  id: number;
-}) => {
+export const Reading = ({ id }: { id: number }) => {
   const [novel, setNovel] = useState({} as SSNovel);
   const [ssnovelBodies, setSSNovelBodies] = useState([] as SSNovelBody[]);
   const [loading, setLoading] = useState(true);
+  const { setIsReading } = useRead();
 
   const fetchData = useCallback(async () => {
     try {
@@ -42,7 +38,7 @@ export const Reading = ({
   }, [ssnovelBodies]);
 
   const handleClick = () => {
-    toggleReading();
+    setIsReading(false);
   };
 
   return (
@@ -67,10 +63,18 @@ export const Reading = ({
               <p>作成日 {novel.created_at}</p>
               <p>更新日 {novel.updated_at}</p>
             </div>
+            <div className="flex justify-center items-center mr-16">
+              <button
+                className="border border-green-400 bg-green-300 bg-opacity-20 hover:bg-opacity-40 transition-all w-full p-4 my-4 text-white flex justify-between items-center tracking-[32px]"
+                onClick={handleClick}
+              >
+                続きを紡ぐ
+              </button>
+            </div>
           </section>
           <div className="w-[1000px] flex justify-center items-center">
             <button
-              className="border border-green-400 bg-green-300 bg-opacity-20 hover:bg-opacity-40 transition-all horizontal-tb w-full p-4 my-4 text-white flex justify-center items-center"
+              className="border border-transparent hover:border-amber-950 hover:border-opacity-20 hover:bg-amber-950 hover:bg-opacity-10 transition-all horizontal-tb w-full p-4 my-4 text-white flex justify-center items-center"
               onClick={handleClick}
             >
               <span className="pr-32">戻</span>

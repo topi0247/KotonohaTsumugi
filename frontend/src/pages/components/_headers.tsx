@@ -2,10 +2,12 @@ import Link from "next/link";
 import style from "./_headers.module.css";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/providers/auth";
+import { useRead } from "@/providers/reading";
 
 export const _Headers = () => {
   const { isLoggedIn } = useAuth();
   const [login, setLogin] = useState(false);
+  const { isReading } = useRead();
 
   useEffect(() => {
     setLogin(isLoggedIn);
@@ -18,8 +20,14 @@ export const _Headers = () => {
   return (
     <header className="w-32 z-10 fixed">
       <div>
-        <h1 className="text-3xl mt-32 mx-12">言の葉つむぎ</h1>
-        <nav className="fixed right-[-35px] h-full flex justify-center items-center mt-32">
+        <h1 className={`text-3xl mt-32 mx-12 ${isReading ? "blur-sm" : ""}`}>
+          言の葉つむぎ
+        </h1>
+        <nav
+          className={`fixed right-[-35px] h-full flex justify-center items-center mt-32 ${
+            isReading ? "blur-sm" : ""
+          }`}
+        >
           <ul className="flex flex-col horizontal-tb text-xl tracking-[20px] gap-4">
             <li className="transition-transform duration-50 ease-in-out hover:translate-x-[-50px] hover:translate-y-[10px]">
               <Link href="/read" className={style.tag}>
