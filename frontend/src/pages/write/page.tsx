@@ -1,26 +1,41 @@
 import { NarrativeType, SSNovelBody } from "@/types/typs";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { memo, use, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 export const Page = memo(
   ({
     ssnovelBody,
     bgColor,
     rotate,
+    isReading,
+    toggleRead,
     style,
   }: {
     ssnovelBody: SSNovelBody;
     rotate: Number;
     bgColor: String;
+    isReading: Boolean;
+    toggleRead: Function;
     style?: React.CSSProperties;
   }) => {
     const [movePage, setMovePage] = useState(0);
     const [initialRotate, setInitialRotate] = useState(rotate);
     const [rotatePage, setRotatePage] = useState(initialRotate);
     const [readPage, setReadPage] = useState(false);
+    useEffect(() => {
+      setInitialRotate(rotate);
+    }, []);
+
+    useEffect(() => {
+      if (isReading) return;
+      handleBack();
+    }, [isReading]);
 
     const handleClick = () => {
-      setMovePage(1000);
+      if (!isReading) {
+        toggleRead();
+      }
+      setMovePage(120);
       setReadPage(true);
       setRotatePage(0);
     };
@@ -37,7 +52,7 @@ export const Page = memo(
           className={`absolute w-[780px] h-[630px] shadow-md hover:translate-x-10 transition-all p-4 ${bgColor}`}
           style={{
             ...style,
-            transform: `translateX(${movePage}px) rotate(${rotatePage}deg)`,
+            transform: `translateX(${movePage}%) rotate(${rotatePage}deg)`,
           }}
         >
           <div

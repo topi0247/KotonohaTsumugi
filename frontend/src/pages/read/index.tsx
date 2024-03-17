@@ -90,7 +90,7 @@ const ReadIndex = () => {
               onClick={() => handleClick(novel.id)}
             >
               {novel.ssnovel_bodies[3] && (
-                <div className="bg-red-100 absolute top-0 right-0  w-full h-full page4 transition-all shadow-lg" />
+                <div className="bg-purple-100 absolute top-0 right-0  w-full h-full page4 transition-all shadow-lg" />
               )}
               {novel.ssnovel_bodies[2] && (
                 <div className="bg-green-100 absolute top-0 right-0  w-full h-full page3 transition-all shadow-lg" />

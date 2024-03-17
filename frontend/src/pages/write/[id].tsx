@@ -4,7 +4,7 @@ import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/router";
 import { NarrativeType, SSNovel, User } from "@/types/typs";
 import { Button } from "@mui/material";
-import { Page } from "./_page";
+import { Page } from "./page";
 
 const WriteContinue = () => {
   const { id } = useRouter().query;
@@ -13,8 +13,9 @@ const WriteContinue = () => {
   const [text, setText] = useState("");
   const [textCount, setTextCount] = useState(0);
   const [ssnovel, setSSNovel] = useState({} as SSNovel);
-  const [narrativeStage, setNarrativeStage] = useState("beginning" as string);
+  const [narrativeStage, setNarrativeStage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isReading, setIsReading] = useState(false);
   const router = useRouter();
 
   const fetchData = useCallback(async () => {
@@ -28,17 +29,18 @@ const WriteContinue = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          setSSNovel(data);
-          const lastBody = data.ssnovel_bodies[data.ssnovel_bodies.length - 1];
+          const length = data.ssnovel_bodies.length;
+          const lastBody = data.ssnovel_bodies[length - 1];
+          console.log("lastBody", length);
           const nextStage = getNextNarrativeStage(lastBody.narrative_stage);
-          if (nextStage === "") router.push("/read");
+          setSSNovel(data);
           setNarrativeStage(nextStage);
           setLoading(false);
         });
-      return;
+    } else {
+      // TODO : ページが存在しないとき用の処理
+      router.push("/read");
     }
-    // TODO : ページが存在しないとき用の処理
-    //router.push("/read");
   }, []);
 
   useEffect(() => {
@@ -52,6 +54,13 @@ const WriteContinue = () => {
 
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    if (narrativeStage === "") {
+      router.push("/read");
+      console.log("narrativeStage", narrativeStage);
+    }
+  }, [narrativeStage]);
 
   const getNextNarrativeStage = (stage: string) => {
     switch (stage) {
@@ -72,7 +81,7 @@ const WriteContinue = () => {
     setTextCount(text.length);
   };
 
-  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClickPost = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (text === "") {
       alert("文字を入力してください");
@@ -117,6 +126,8 @@ const WriteContinue = () => {
         return "bg-blue-100";
       case 2:
         return "bg-green-100";
+      case 3:
+        return "bg-purple-100";
       default:
         return "bg-white";
     }
@@ -133,6 +144,10 @@ const WriteContinue = () => {
       default:
         return 0;
     }
+  };
+
+  const toggleRead = () => {
+    setIsReading(!isReading);
   };
 
   if (loading) return <div>loading...</div>;
@@ -162,7 +177,11 @@ const WriteContinue = () => {
               />
             </div>
           </div>
-          <div>
+          <div
+            className={`absolute h-full transition-all ${
+              isReading ? "translate-x-52" : ""
+            }`}
+          >
             {ssnovel.ssnovel_bodies.map((ssnovelBody, index) => {
               return (
                 <Page
@@ -170,6 +189,8 @@ const WriteContinue = () => {
                   ssnovelBody={ssnovelBody}
                   bgColor={getBgColor(index)}
                   rotate={getRotate(index)}
+                  isReading={isReading}
+                  toggleRead={toggleRead}
                   style={{
                     right: `${1160 + index * 50}px`,
                   }}
@@ -178,11 +199,11 @@ const WriteContinue = () => {
             })}
           </div>
         </section>
-        <div className="col-span-1 w-full mx-auto mt-10 horizontal-tb flex justify-center items-center gap-3">
-          <Button variant="outlined" type="button">
-            読み返す
+        <div className="col-span-1 w-full mx-auto mt-10 horizontal-tb flex justify-end items-center gap-3 mr-32">
+          <Button variant="outlined" type="button" onClick={toggleRead}>
+            {isReading ? "戻す" : "読み返す"}
           </Button>
-          <Button variant="outlined" type="button" onClick={handleClick}>
+          <Button variant="outlined" type="button" onClick={handleClickPost}>
             続きを紡いだ
           </Button>
           <p>文字数：{textCount} / 400</p>

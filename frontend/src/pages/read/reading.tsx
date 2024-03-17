@@ -65,14 +65,16 @@ export const Reading = ({ id }: { id: number }) => {
               <p>作成日 {novel.created_at}</p>
               <p>更新日 {novel.updated_at}</p>
             </div>
-            <div className="flex justify-center items-center mr-16">
-              <button
-                className="border hover:border-green-400 hover:bg-green-300 bg-opacity-20 hover:bg-opacity-10 transition-all w-full p-4 my-4 text-white flex justify-between items-center tracking-[32px]"
-                onClick={handleClick}
-              >
-                続きを紡ぐ
-              </button>
-            </div>
+            {ssnovelBodies.length < 4 && (
+              <div className="flex justify-center items-center mr-16">
+                <button
+                  className="border hover:border-green-400 hover:bg-green-300 bg-opacity-20 hover:bg-opacity-10 transition-all w-full p-4 my-4 text-white flex justify-between items-center tracking-[32px]"
+                  onClick={handleClick}
+                >
+                  続きを紡ぐ
+                </button>
+              </div>
+            )}
           </section>
           <div className="w-[1000px] flex justify-center items-center">
             <button
