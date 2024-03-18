@@ -2,6 +2,11 @@ import { useRead } from "@/providers/reading";
 import { SSNovel, SSNovelBody } from "@/types/typs";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/effect-cards";
+import { EffectCards } from "swiper/modules";
+import { Page } from "./page";
 
 export const Reading = ({ id }: { id: number }) => {
   const [novel, setNovel] = useState({} as SSNovel);
@@ -38,53 +43,74 @@ export const Reading = ({ id }: { id: number }) => {
     if (ssnovelBodies.length > 0) setLoading(false);
   }, [ssnovelBodies]);
 
-  const handleClick = () => {
+  const handleWriteClick = () => {
     setIsReading(false);
     router.push(`/write/${id}`);
+  };
+
+  const handleBackClick = () => {
+    setIsReading(false);
+  };
+
+  const getBgColor = (index: number) => {
+    const bgcolor = [
+      "bg-white",
+      "bg-green-100",
+      "bg-blue-100",
+      "bg-yellow-100",
+    ];
+    return bgcolor[index];
   };
 
   return (
     <>
       {loading ? (
-        <div className="fixed w-full h-full z-10 right-0 top-0 flex justify-center items-center bg-black bg-opacity-30">
-          <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
-        </div>
+        <div>loading...</div>
       ) : (
-        <article
-          id="novel_body"
-          className="fixed w-full h-full z-10 right-0 top-0 flex justify-center items-center bg-black bg-opacity-30"
-        >
-          <section className="bg-white max-w-[1100px] w-full aspect-video p-4 pb-8 px-8 flex flex-col justify-start relative">
-            <h2 className="text-4xl">{novel.title}</h2>
-            <p className="text-end text-2xl">{ssnovelBodies[0].user.name}</p>
-            <h3 className="mt-10 text-3xl text-gray-500">起</h3>
-            <p className="mx-6 tracking-[0.25em] leading-10 text-2xl mt-4 whitespace-pre-wrap">
-              {ssnovelBodies[0].content}
-            </p>
-            <div className="horizontal-tb absolute bottom-0 left-0 flex gap-2 text-sm justify-start items-end text-start p-2 text-gray-400">
-              <p>作成日 {novel.created_at}</p>
-              <p>更新日 {novel.updated_at}</p>
-            </div>
-            {ssnovelBodies.length < 4 && (
-              <div className="flex justify-center items-center mr-16">
-                <button
-                  className="border hover:border-green-400 hover:bg-green-300 bg-opacity-20 hover:bg-opacity-10 transition-all w-full p-4 my-4 text-white flex justify-between items-center tracking-[32px]"
-                  onClick={handleClick}
-                >
-                  続きを紡ぐ
-                </button>
-              </div>
-            )}
-          </section>
-          <div className="w-[1000px] flex justify-center items-center">
-            <button
-              className="border border-transparent hover:border-slate-800 hover:border-opacity-20 hover:bg-slate-500 hover:bg-opacity-10 transition-all horizontal-tb w-full p-4 my-4 text-white flex justify-center items-center"
-              onClick={handleClick}
+        <article className="horizontal-tb fixed w-full h-full flex justify-center items-center z-50 bg-black bg-opacity-40">
+          <section className="max-w-[1200px] w-full aspect-video m-auto">
+            <Swiper
+              effect={"cards"}
+              grabCursor={true}
+              modules={[EffectCards]}
+              className="w-full h-full"
+              initialSlide={3}
             >
-              <span className="pr-32">戻</span>
-              <span className="pl-32">す</span>
-            </button>
-          </div>
+              <SwiperSlide className="flex justify-center items-center bg-white vertical-rl">
+                Slide 1
+              </SwiperSlide>
+              <SwiperSlide className="flex justify-center items-center bg-white vertical-rl">
+                Slide 2
+              </SwiperSlide>
+              <SwiperSlide className="flex justify-center items-center bg-white vertical-rl">
+                Slide 3
+              </SwiperSlide>
+              <SwiperSlide className="flex justify-center items-center bg-white vertical-rl">
+                <Page ssnovelBody={ssnovelBodies[0]} title={novel.title} />
+              </SwiperSlide>
+            </Swiper>
+            <div className="w-full m-auto flex justify-between items-center gap-32 px-10">
+              {ssnovelBodies.length < 5 && (
+                <button
+                  className="border border-transparent hover:border-green-800 hover:border-opacity-50 hover:bg-green-300 hover:bg-opacity-10 transition-all horizontal-tb w-full p-4 my-4 text-white flex justify-center items-center gap-10"
+                  onClick={handleWriteClick}
+                >
+                  <span>続</span>
+                  <span>き</span>
+                  <span>を</span>
+                  <span>紡</span>
+                  <span>ぐ</span>
+                </button>
+              )}
+              <button
+                className="border border-transparent hover:border-slate-800 hover:border-opacity-20 hover:bg-slate-500 hover:bg-opacity-10 transition-all horizontal-tb w-full p-4 my-4 text-white flex justify-center items-center gap-32"
+                onClick={handleBackClick}
+              >
+                <span>戻</span>
+                <span>す</span>
+              </button>
+            </div>
+          </section>
         </article>
       )}
     </>

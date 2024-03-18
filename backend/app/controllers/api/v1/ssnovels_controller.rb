@@ -1,4 +1,5 @@
 class Api::V1::SsnovelsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:index, :show]
   def index
     @ssnovels = Ssnovel.includes(ssnovel_bodies: :user).all
     render json: @ssnovels.map(&:as_custom_json)

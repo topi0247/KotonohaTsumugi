@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import style from "./index.module.css";
-import { Reading } from "./reading";
 import { SSNovel } from "@/types/typs";
 import { useRead } from "@/providers/reading";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Reading } from "./reading";
 
 const ReadIndex = () => {
   const { isReading, setIsReading } = useRead();
@@ -75,6 +78,16 @@ const ReadIndex = () => {
     setIsReading(true);
   };
 
+  const getBgColor = (index: number) => {
+    const bgcolor = [
+      "bg-white",
+      "bg-blue-100",
+      "bg-green-100",
+      "bg-purple-100",
+    ];
+    return bgcolor[index];
+  };
+
   return (
     <>
       <article
@@ -90,15 +103,27 @@ const ReadIndex = () => {
               onClick={() => handleClick(novel.id)}
             >
               {novel.ssnovel_bodies[3] && (
-                <div className="bg-purple-100 absolute top-0 right-0  w-full h-full page4 transition-all shadow-lg" />
+                <div
+                  className={`absolute top-0 right-0  w-full h-full page4 transition-all shadow-lg
+                  ${getBgColor(3)}`}
+                />
               )}
               {novel.ssnovel_bodies[2] && (
-                <div className="bg-green-100 absolute top-0 right-0  w-full h-full page3 transition-all shadow-lg" />
+                <div
+                  className={`bg-green-100 absolute top-0 right-0  w-full h-full page3 transition-all shadow-lg
+                  ${getBgColor(2)}`}
+                />
               )}
               {novel.ssnovel_bodies[1] && (
-                <div className="bg-blue-100 absolute top-0 right-0 w-full h-full transition-all shadow-md page2" />
+                <div
+                  className={`bg-blue-100 absolute top-0 right-0 w-full h-full transition-all shadow-md page2
+                ${getBgColor(1)}`}
+                />
               )}
-              <div className="bg-white absolute top-0 right-0 h-full w-hull flex flex-col gap-3 justify-start p-4 w-full shadow-sm hover:rotate-[3deg] transition-all page1 pb-8">
+              <div
+                className={`bg-white absolute top-0 right-0 h-full w-hull flex flex-col gap-3 justify-start p-4 w-full shadow-sm hover:rotate-[3deg] transition-all page1 pb-8
+                ${getBgColor(0)}`}
+              >
                 <h3 className="text-2xl text-start">{novel.title}</h3>
                 <div className="text-end pb-3">
                   <p className="text-xl">{novel.ssnovel_bodies[0].user.name}</p>

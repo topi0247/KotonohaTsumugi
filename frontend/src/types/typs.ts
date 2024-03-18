@@ -19,10 +19,3 @@ export type SSNovel = {
   updated_at: string;
   ssnovel_bodies: SSNovelBody[];
 };
-
-export const NarrativeType = {
-  beginning: "起",
-  rising_action: "承",
-  climax: "転",
-  falling_action: "結",
-};

@@ -16,3 +16,32 @@ body {
     display: none;
   }
 }
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  color: white;
+}
+
+.item__red {
+  background-color: red;
+}
+
+.item__blue {
+  background-color: blue;
+}
+
+.item__yellow {
+  background-color: yellow;
+  color: black;
+}

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/router";
-import { NarrativeType, SSNovel, User } from "@/types/typs";
+import { SSNovel, User } from "@/types/typs";
 import { Button } from "@mui/material";
 import { Page } from "./page";
 
@@ -75,6 +75,26 @@ const WriteContinue = () => {
     }
   };
 
+  const getNarrativeIndex = () => {
+    const narrative_stage: { [key: string]: number } = {
+      beginning: 0,
+      rising_action: 1,
+      climax: 2,
+      falling_action: 3,
+    };
+    return narrative_stage[narrativeStage];
+  };
+
+  const getNarrativeString = () => {
+    const narrative_stage: { [key: string]: string } = {
+      beginning: "起",
+      rising_action: "承",
+      climax: "転",
+      falling_action: "結",
+    };
+    return narrative_stage[narrativeStage];
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
     setText(e.target.value);
@@ -113,24 +133,14 @@ const WriteContinue = () => {
     }
   };
 
-  const getNarrativeIndex = () => {
-    const keys = Object.keys(NarrativeType);
-    return keys.indexOf(narrativeStage);
-  };
-
-  const getBgColor = (index = getNarrativeIndex()) => {
-    switch (index) {
-      case 0:
-        return "bg-white";
-      case 1:
-        return "bg-blue-100";
-      case 2:
-        return "bg-green-100";
-      case 3:
-        return "bg-purple-100";
-      default:
-        return "bg-white";
-    }
+  const getBgColor = (index: number) => {
+    const bgcolor = [
+      "bg-white",
+      "bg-blue-100",
+      "bg-green-100",
+      "bg-purple-100",
+    ];
+    return bgcolor[index];
   };
 
   const getRotate = (index: number) => {
@@ -163,14 +173,16 @@ const WriteContinue = () => {
               </h2>
             </div>
             <div className="flex m-4 text-bold justify-between items-center">
-              <h3 className="text-3xl">
-                {NarrativeType[narrativeStage as keyof typeof NarrativeType]}
-              </h3>
+              <h3 className="text-3xl">{getNarrativeString()}</h3>
               <h3 className="text-end text-2xl">{user?.name}</h3>
             </div>
-            <div className={`w-[1000px] h-[630px] m-auto p-5 ${getBgColor()}`}>
+            <div
+              className={`w-[1000px] h-[630px] m-auto p-5
+              ${getBgColor(getNarrativeIndex())}`}
+            >
               <textarea
-                className={`resize-none leading-[calc(24px+25px)] h-full focus:outline-none text-2xl tracking-widest px-3 overflow-hidden w-full break-all ${getBgColor()}`}
+                className={`resize-none leading-[calc(24px+25px)] h-full focus:outline-none text-2xl tracking-widest px-3 overflow-hidden w-full break-all
+                ${getBgColor(getNarrativeIndex())}`}
                 onChange={handleChange}
                 value={text}
                 placeholder="・・・・・・"
