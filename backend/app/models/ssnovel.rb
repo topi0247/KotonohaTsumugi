@@ -1,5 +1,6 @@
 class Ssnovel < ApplicationRecord
   has_many :ssnovel_bodies, dependent: :destroy
+  has_many :users, through: :ssnovel_bodies
   validates :title, presence: true, uniqueness: true
 
   def as_custom_json

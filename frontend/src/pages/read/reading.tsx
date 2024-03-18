@@ -7,10 +7,12 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 import { EffectCards } from "swiper/modules";
 import { Page } from "./page";
+import { useAuth } from "@/providers/auth";
 
 export const Reading = ({ id }: { id: number }) => {
   const [novel, setNovel] = useState({} as SSNovel);
   const [ssnovelBodies, setSSNovelBodies] = useState([] as SSNovelBody[]);
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const { setIsReading } = useRead();
   const router = useRouter();
@@ -52,14 +54,22 @@ export const Reading = ({ id }: { id: number }) => {
     setIsReading(false);
   };
 
-  const getBgColor = (index: number) => {
-    const bgcolor = [
-      "bg-white",
-      "bg-green-100",
-      "bg-blue-100",
-      "bg-yellow-100",
-    ];
-    return bgcolor[index];
+  const getBgColor = (stage: string) => {
+    const bgcolor: { [key: string]: string } = {
+      beginning: "bg-white",
+      rising_action: "bg-green-100",
+      climax: "bg-blue-100",
+      falling_action: "bg-purple-100",
+    };
+    return bgcolor[stage];
+  };
+
+  const getIsContinue = () => {
+    if (!user) return false;
+    const userSearch = ssnovelBodies.find((body) => {
+      return body.user.id === user?.id;
+    });
+    return ssnovelBodies.length < 4 && !userSearch;
   };
 
   return (
@@ -74,23 +84,23 @@ export const Reading = ({ id }: { id: number }) => {
               grabCursor={true}
               modules={[EffectCards]}
               className="w-full h-full"
-              initialSlide={3}
+              initialSlide={ssnovelBodies.length - 1}
             >
-              <SwiperSlide className="flex justify-center items-center bg-white vertical-rl">
-                Slide 1
-              </SwiperSlide>
-              <SwiperSlide className="flex justify-center items-center bg-white vertical-rl">
-                Slide 2
-              </SwiperSlide>
-              <SwiperSlide className="flex justify-center items-center bg-white vertical-rl">
-                Slide 3
-              </SwiperSlide>
-              <SwiperSlide className="flex justify-center items-center bg-white vertical-rl">
-                <Page ssnovelBody={ssnovelBodies[0]} title={novel.title} />
-              </SwiperSlide>
+              {ssnovelBodies
+                .slice()
+                .reverse()
+                .map((ssnovelBody) => (
+                  <SwiperSlide
+                    key={ssnovelBody.id}
+                    className={`flex justify-center items-center vertical-rl
+                              ${getBgColor(ssnovelBody.narrative_stage)}`}
+                  >
+                    <Page ssnovelBody={ssnovelBody} title={novel.title} />
+                  </SwiperSlide>
+                ))}
             </Swiper>
             <div className="w-full m-auto flex justify-between items-center gap-32 px-10">
-              {ssnovelBodies.length < 5 && (
+              {getIsContinue() && (
                 <button
                   className="border border-transparent hover:border-green-800 hover:border-opacity-50 hover:bg-green-300 hover:bg-opacity-10 transition-all horizontal-tb w-full p-4 my-4 text-white flex justify-center items-center gap-10"
                   onClick={handleWriteClick}

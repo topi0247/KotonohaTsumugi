@@ -73,7 +73,7 @@ const Write = () => {
         </div>
         <div className="mx-5 max-w-[1000px] h-[600px] m-auto w-full p-5 bg-white">
           <textarea
-            className="resize-none leading-[calc(24px+25px)] focus:outline-none text-2xl tracking-widest px-3 overflow-hidden w-full break-all"
+            className="resize-none leading-[calc(24px+25px)] focus:outline-none text-2xl tracking-widest px-3 w-full h-full break-all"
             onChange={handleChange}
             value={text}
             placeholder="徒然なるままに"
