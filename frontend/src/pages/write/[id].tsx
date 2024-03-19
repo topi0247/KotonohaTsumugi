@@ -16,44 +16,14 @@ const WriteContinue = () => {
   const [narrativeStage, setNarrativeStage] = useState("");
   const [loading, setLoading] = useState(true);
   const [isReading, setIsReading] = useState(false);
-  const [written, setWritten] = useState(false);
   const router = useRouter();
 
   const fetchData = useCallback(async () => {
-    if (id) {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/ssnovels/${id}`, {
-        method: "GET",
-        credentials: "include",
-        headers: new Headers({
-          "Content-Type": "application/json",
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          const ssnovel_bodies = data.ssnovel_bodies;
-          const userSearch = ssnovel_bodies.find(
-            ({ body }: { body: SSNovelBody }) => {
-              body.user.id === user.id;
-            }
-          );
-          if (userSearch) {
-            setWritten(true);
-            return;
-          }
-          const length = ssnovel_bodies.length;
-          const lastBody = ssnovel_bodies[length - 1];
-          const nextStage = getNextNarrativeStage(lastBody.narrative_stage);
-          setSSNovel(data);
-          setNarrativeStage(nextStage);
-          setLoading(false);
-        });
-    } else {
-      // TODO : ページが存在しないとき用の処理
+    if (!id) {
       router.push("/read");
+      return;
     }
-  }, [id, router, user.id]);
 
-  useEffect(() => {
     currentUser().then((data) => {
       if (data) {
         setUser(data);
@@ -62,8 +32,38 @@ const WriteContinue = () => {
       }
     });
 
+    // TODO : このあたりはAPIクライアントを作成して切り出す
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/ssnovels/${id}`, {
+      method: "GET",
+      credentials: "include",
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const ssnovel_bodies = data.ssnovel_bodies;
+        const userSearch = ssnovel_bodies.find(
+          ({ body }: { body: SSNovelBody }) => {
+            body.user.id === user.id;
+          }
+        );
+        if (userSearch) {
+          router.push("/read");
+          return;
+        }
+        const length = ssnovel_bodies.length;
+        const lastBody = ssnovel_bodies[length - 1];
+        const nextStage = getNextNarrativeStage(lastBody.narrative_stage);
+        setSSNovel(data);
+        setNarrativeStage(nextStage);
+        setLoading(false);
+      });
+  }, [id, currentUser, router, user.id]);
+
+  useEffect(() => {
     fetchData();
-  }, [currentUser, fetchData, router]);
+  }, [fetchData, router]);
 
   useEffect(() => {
     if (narrativeStage === "") {

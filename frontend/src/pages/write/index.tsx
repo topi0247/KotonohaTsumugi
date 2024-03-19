@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/router";
@@ -13,15 +13,18 @@ const Write = () => {
   const [textCount, setTextCount] = useState(0);
   const router = useRouter();
 
-  useEffect(() => {
-    currentUser().then((data) => {
-      if (data) {
-        setUser(data);
-      } else {
-        router.push("/login");
-      }
-    });
+  const fetchUser = useCallback(async () => {
+    const data = await currentUser();
+    if (data) {
+      setUser(data);
+    } else {
+      router.push("/login");
+    }
   }, [currentUser, router]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;

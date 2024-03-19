@@ -5,6 +5,7 @@ import {
   useState,
   ReactNode,
   useEffect,
+  useCallback,
 } from "react";
 
 interface AuthContextType {
@@ -43,26 +44,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    //localStorage.getItem("auth") && setIsLoggedIn(true);
-    currentUser().then((data) => {
-      if (data) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      localStorage.setItem("auth", "true");
-    } else {
-      localStorage.removeItem("auth");
-    }
-  }, [isLoggedIn]);
-
-  const currentUser = async () => {
+  const currentUser = useCallback(async () => {
     try {
       const response = await fetch(`${API_FULL_URL}/users/current_user`, {
         method: "GET",
@@ -80,7 +62,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       console.error(error);
       return null;
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    currentUser();
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      localStorage.setItem("auth", "true");
+    } else {
+      localStorage.removeItem("auth");
+    }
+  }, [isLoggedIn]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -146,7 +140,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         body: JSON.stringify({ name, email, password, passwordConfirm }),
       });
 
-      console.log(response);
       if (!response.ok) {
         throw new Error("登録に失敗しました");
       }

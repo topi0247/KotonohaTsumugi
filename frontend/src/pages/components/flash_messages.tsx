@@ -1,4 +1,6 @@
-const FlashMessages = ({ text }: { text: string[] }) => {
+import { memo } from "react";
+
+const FlashMessages = memo(({ text }: { text: string[] }) => {
   if (!text) return null;
   return (
     <div className="border-red-500 border py-2 bg-red-200 bg-opacity-80 text-slate-600">
@@ -7,6 +9,7 @@ const FlashMessages = ({ text }: { text: string[] }) => {
       ))}
     </div>
   );
-};
+});
 
+FlashMessages.displayName = "FlashMessages";
 export default FlashMessages;
