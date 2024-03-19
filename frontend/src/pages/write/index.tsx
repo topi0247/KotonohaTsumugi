@@ -21,7 +21,7 @@ const Write = () => {
         router.push("/login");
       }
     });
-  }, []);
+  }, [currentUser, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;

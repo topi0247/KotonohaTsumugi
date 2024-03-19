@@ -11,10 +11,6 @@ export const _Headers = () => {
 
   useEffect(() => {
     setLogin(isLoggedIn);
-  }, []);
-
-  useEffect(() => {
-    setLogin(isLoggedIn);
   }, [isLoggedIn]);
 
   return (

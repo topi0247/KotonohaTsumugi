@@ -10,7 +10,7 @@ const LogoutPage = () => {
   useEffect(() => {
     if (user) return;
     router.push("/login");
-  }, []);
+  }, [user, router]);
 
   const handleClickLogout = () => {
     logout();

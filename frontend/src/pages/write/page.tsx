@@ -91,5 +91,5 @@ const Page = memo(
     );
   }
 );
-
+Page.displayName = "Page";
 export default memo(Page);

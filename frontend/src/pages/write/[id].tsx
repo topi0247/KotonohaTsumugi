@@ -69,7 +69,7 @@ const WriteContinue = () => {
     if (narrativeStage === "") {
       router.push("/read");
     }
-  }, [narrativeStage]);
+  }, [narrativeStage, router]);
 
   const getNextNarrativeStage = (stage: string) => {
     switch (stage) {
