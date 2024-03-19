@@ -4,7 +4,7 @@ import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/router";
 import { SSNovelBody, SSNovel, User } from "@/types/typs";
 import { Button } from "@mui/material";
-import { Page } from "./page";
+import Page from "./page";
 
 const WriteContinue = () => {
   const { id } = useRouter().query;

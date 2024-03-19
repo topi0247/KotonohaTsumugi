@@ -2,7 +2,7 @@ import { SSNovelBody } from "@/types/typs";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { memo, useCallback, useEffect, useState } from "react";
 
-export const Page = memo(
+const Page = memo(
   ({
     ssnovelBody,
     bgColor,
@@ -91,3 +91,5 @@ export const Page = memo(
     );
   }
 );
+
+export default memo(Page);
