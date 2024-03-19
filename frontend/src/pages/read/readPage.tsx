@@ -36,5 +36,5 @@ const ReadPage = memo(
     );
   }
 );
-
+ReadPage.displayName = "ReadPage";
 export default ReadPage;

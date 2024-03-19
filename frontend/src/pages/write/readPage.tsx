@@ -90,4 +90,5 @@ const ReadPage = memo(
     );
   }
 );
+ReadPage.displayName = "ReadPage";
 export default memo(ReadPage);
