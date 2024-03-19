@@ -50,6 +50,8 @@ const ReadPage = memo(
       setRotatePage(0);
     };
 
+    if (!ssnovelBody) return null;
+
     return (
       <>
         <section
