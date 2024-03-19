@@ -46,6 +46,16 @@ export const Page = memo(
       setRotatePage(initialRotate);
     };
 
+    const getNarrativeString = () => {
+      const narrative_stage: { [key: string]: string } = {
+        beginning: "起",
+        rising_action: "承",
+        climax: "転",
+        falling_action: "結",
+      };
+      return narrative_stage[ssnovelBody.narrative_stage];
+    };
+
     return (
       <>
         <section
@@ -59,13 +69,7 @@ export const Page = memo(
             className="flex justify-between p-2 cursor-pointer "
             onClick={handleClick}
           >
-            <h2 className="text-2xl">
-              {
-                NarrativeType[
-                  ssnovelBody.narrative_stage as keyof typeof NarrativeType
-                ]
-              }
-            </h2>
+            <h2 className="text-2xl">{getNarrativeString()}</h2>
             <h4 className="text-xl pb-8">{ssnovelBody.user.name}</h4>
           </div>
           <div>
