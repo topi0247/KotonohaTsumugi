@@ -1,10 +1,10 @@
 import Link from "next/link";
-import style from "./_headers.module.css";
+import style from "./Headers.module.css";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/providers/auth";
 import { useRead } from "@/providers/reading";
 
-export const _Headers = () => {
+const Headers = () => {
   const { isLoggedIn } = useAuth();
   const [login, setLogin] = useState(false);
   const { isReading } = useRead();
@@ -61,3 +61,5 @@ export const _Headers = () => {
     </header>
   );
 };
+
+export default Headers;

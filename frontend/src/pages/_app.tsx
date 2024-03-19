@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { Shippori_Mincho_B1 } from "next/font/google";
-import { _Headers } from "@/pages/components/_headers";
+import Headers from "@/pages/components/headers";
 import { useRef } from "react";
 import { AppProvider } from "@/providers";
 
@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
           ref={screenRef}
           className="ml-auto flex flex-col vertical-rl w-full hidden-scrollbar"
         >
-          <_Headers />
+          <Headers />
           <main className="w-full flex">
             <Component {...pageProps} />
           </main>

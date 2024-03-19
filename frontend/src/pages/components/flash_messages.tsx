@@ -1,4 +1,4 @@
-export const _FlashMessages = ({ text }: { text: string[] }) => {
+const FlashMessages = ({ text }: { text: string[] }) => {
   return (
     <div className="border-red-500 border py-2 bg-red-200 bg-opacity-80 text-slate-600">
       {text.map((message, index) => (
@@ -7,3 +7,5 @@ export const _FlashMessages = ({ text }: { text: string[] }) => {
     </div>
   );
 };
+
+export default FlashMessages;
