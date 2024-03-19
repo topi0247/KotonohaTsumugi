@@ -26,7 +26,7 @@ const Page = memo(
       setMovePage(0);
       setReadPage(false);
       setRotatePage(rotate);
-    }, []);
+    }, [rotate]);
 
     useEffect(() => {
       if (isReading) return;

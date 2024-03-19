@@ -5,7 +5,7 @@ import { useRead } from "@/providers/reading";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Reading } from "./reading";
+import Reading from "./reading";
 
 const ReadIndex = () => {
   const { isReading, setIsReading } = useRead();

@@ -6,10 +6,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import { EffectCards } from "swiper/modules";
-import { Page } from "./page";
+import Page from "./page";
 import { useAuth } from "@/providers/auth";
 
-export const Reading = ({ id }: { id: number }) => {
+const Reading = ({ id }: { id: number }) => {
   const [novel, setNovel] = useState({} as SSNovel);
   const [ssnovelBodies, setSSNovelBodies] = useState([] as SSNovelBody[]);
   const { user } = useAuth();
@@ -126,3 +126,5 @@ export const Reading = ({ id }: { id: number }) => {
     </>
   );
 };
+
+export default Reading;

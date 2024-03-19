@@ -51,7 +51,7 @@ const WriteContinue = () => {
       // TODO : ページが存在しないとき用の処理
       router.push("/read");
     }
-  }, []);
+  }, [id, router, user.id]);
 
   useEffect(() => {
     currentUser().then((data) => {
