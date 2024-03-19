@@ -2,7 +2,15 @@ import { SSNovelBody } from "@/types/typs";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { memo, useCallback, useEffect, useState } from "react";
 
-const Page = memo(
+// TODO : この関数は共通化できる
+const NarrativeStageConvert: { [key: string]: string } = {
+  beginning: "起",
+  rising_action: "承",
+  climax: "転",
+  falling_action: "結",
+};
+
+const ReadPage = memo(
   ({
     ssnovelBody,
     bgColor,
@@ -42,17 +50,6 @@ const Page = memo(
       setRotatePage(0);
     };
 
-    const getNarrativeString = () => {
-      if (!ssnovelBody.narrative_stage) return;
-      const narrative_stage: { [key: string]: string } = {
-        beginning: "起",
-        rising_action: "承",
-        climax: "転",
-        falling_action: "結",
-      };
-      return narrative_stage[ssnovelBody.narrative_stage];
-    };
-
     return (
       <>
         <section
@@ -66,7 +63,9 @@ const Page = memo(
             className="flex justify-between p-2 cursor-pointer "
             onClick={handleClick}
           >
-            <h2 className="text-2xl">{getNarrativeString()}</h2>
+            <h2 className="text-2xl">
+              {NarrativeStageConvert[ssnovelBody.narrative_stage]}
+            </h2>
             <h4 className="text-xl pb-8">{ssnovelBody.user.name}</h4>
           </div>
           <div>
@@ -91,5 +90,4 @@ const Page = memo(
     );
   }
 );
-Page.displayName = "Page";
-export default memo(Page);
+export default memo(ReadPage);

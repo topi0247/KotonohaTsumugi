@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import { EffectCards } from "swiper/modules";
-import Page from "./page";
+import ReadPage from "./readPage";
 import { useAuth } from "@/providers/auth";
 
 const Reading = ({ id }: { id: number }) => {
@@ -95,7 +95,7 @@ const Reading = ({ id }: { id: number }) => {
                     className={`flex justify-center items-center vertical-rl
                               ${getBgColor(ssnovelBody.narrative_stage)}`}
                   >
-                    <Page ssnovelBody={ssnovelBody} title={novel.title} />
+                    <ReadPage ssnovelBody={ssnovelBody} title={novel.title} />
                   </SwiperSlide>
                 ))}
             </Swiper>

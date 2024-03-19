@@ -4,7 +4,7 @@ import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/router";
 import { SSNovelBody, SSNovel, User } from "@/types/typs";
 import { Button } from "@mui/material";
-import Page from "./page";
+import ReadPage from "./readPage";
 
 const WriteContinue = () => {
   const { id } = useRouter().query;
@@ -205,7 +205,7 @@ const WriteContinue = () => {
           >
             {ssnovel.ssnovel_bodies.map((ssnovelBody, index) => {
               return (
-                <Page
+                <ReadPage
                   key={index}
                   ssnovelBody={ssnovelBody}
                   bgColor={getBgColor(index)}

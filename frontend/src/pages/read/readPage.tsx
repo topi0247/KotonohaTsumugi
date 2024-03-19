@@ -1,7 +1,7 @@
 import { SSNovelBody } from "@/types/typs";
 import { memo } from "react";
 
-const Page = memo(
+const ReadPage = memo(
   ({
     ssnovelBody,
     title = "",
@@ -36,5 +36,5 @@ const Page = memo(
     );
   }
 );
-Page.displayName = "Page";
-export default Page;
+
+export default ReadPage;
