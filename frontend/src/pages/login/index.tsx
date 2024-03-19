@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Button, TextField } from "@mui/material";
 import { useAuth } from "@/providers/auth";
-import { _FlashMessages } from "@/pages/components/_flash_messages";
+import FlashMessages from "@/pages/components/flash_messages";
 import Link from "next/link";
 
 const LoginPage = () => {
@@ -36,7 +36,7 @@ const LoginPage = () => {
             className="text-center flex flex-col gap-3"
             onSubmit={handleSubmit}
           >
-            {isErrorMsg.length > 0 && <_FlashMessages text={isErrorMsg} />}
+            {isErrorMsg.length > 0 && <FlashMessages text={isErrorMsg} />}
             <TextField
               id="session[email]"
               label="メールアドレス"
