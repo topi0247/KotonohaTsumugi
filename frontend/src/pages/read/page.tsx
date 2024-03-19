@@ -35,5 +35,5 @@ const Page = memo(
     );
   }
 );
-
+Page.displayName = "Page";
 export default Page;
