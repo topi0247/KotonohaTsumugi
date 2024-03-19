@@ -43,6 +43,7 @@ const Page = memo(
     };
 
     const getNarrativeString = () => {
+      if (!ssnovelBody.narrative_stage) return;
       const narrative_stage: { [key: string]: string } = {
         beginning: "起",
         rising_action: "承",
