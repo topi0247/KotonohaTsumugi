@@ -1,5 +1,5 @@
 import Link from "next/link";
-import style from "./Headers.module.css";
+import style from "./headers.module.css";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/providers/auth";
 import { useRead } from "@/providers/reading";
