@@ -1,6 +1,6 @@
 import { SSNovelBody } from "@/types/typs";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 
 export const Page = memo(
   ({
@@ -22,14 +22,17 @@ export const Page = memo(
     const [initialRotate, setInitialRotate] = useState(rotate);
     const [rotatePage, setRotatePage] = useState(initialRotate);
     const [readPage, setReadPage] = useState(false);
-    useEffect(() => {
-      setInitialRotate(rotate);
+
+    const handleBack = useCallback(() => {
+      setMovePage(0);
+      setReadPage(false);
+      setRotatePage(initialRotate);
     }, []);
 
     useEffect(() => {
       if (isReading) return;
       handleBack();
-    }, [isReading]);
+    }, [isReading, handleBack]);
 
     const handleClick = () => {
       if (!isReading) {
@@ -38,12 +41,6 @@ export const Page = memo(
       setMovePage(120);
       setReadPage(true);
       setRotatePage(0);
-    };
-
-    const handleBack = () => {
-      setMovePage(0);
-      setReadPage(false);
-      setRotatePage(initialRotate);
     };
 
     const getNarrativeString = () => {
