@@ -12,6 +12,7 @@ const Ssnovel = memo(
     novel: SSNovel;
     handleClick: (id: number) => void;
   }) => {
+    if (!novel) return;
     return (
       <section
         className="relative w-[500px] aspect-video vertical-rl cursor-pointer"
