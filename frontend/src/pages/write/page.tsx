@@ -19,14 +19,13 @@ const Page = memo(
     style?: React.CSSProperties;
   }) => {
     const [movePage, setMovePage] = useState(0);
-    const [initialRotate, setInitialRotate] = useState(rotate);
-    const [rotatePage, setRotatePage] = useState(initialRotate);
+    const [rotatePage, setRotatePage] = useState(rotate);
     const [readPage, setReadPage] = useState(false);
 
     const handleBack = useCallback(() => {
       setMovePage(0);
       setReadPage(false);
-      setRotatePage(initialRotate);
+      setRotatePage(rotate);
     }, []);
 
     useEffect(() => {

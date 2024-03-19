@@ -63,7 +63,7 @@ const WriteContinue = () => {
     });
 
     fetchData();
-  }, [fetchData]);
+  }, [currentUser, fetchData]);
 
   useEffect(() => {
     if (narrativeStage === "") {
