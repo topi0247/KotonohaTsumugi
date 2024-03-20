@@ -85,7 +85,7 @@ const ReadIndex = () => {
           isReading ? "blur-sm" : ""
         }`}
       >
-        <div className="w-full max-w-[1000px] m-auto  gap-x-6 gap-y-8 flex flex-row-reverse">
+        <div className="w-full max-w-[1000px] m-auto grid grid-cols-2 gap-y-7 gap-x-8">
           {novels.map((novel) => (
             <Ssnovel key={novel.id} novel={novel} handleClick={handleClick} />
           ))}
