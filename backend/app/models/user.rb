@@ -8,6 +8,7 @@ class User < ApplicationRecord
   :jwt_authenticatable,
   jwt_revocation_strategy: self
   has_many :ssnovel_bodies, dependent: :destroy
+  has_many :ssnovels, through: :ssnovel_bodies
   validates :email, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: true
 

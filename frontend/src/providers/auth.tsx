@@ -54,6 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         });
         const data = await response.json();
         setIsLoggedIn(data.logged_in);
+        setUser(data.user);
       } catch (error) {
         console.error("ログイン状態の確認に失敗しました。", error);
       }

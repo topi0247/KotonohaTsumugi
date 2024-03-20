@@ -14,7 +14,6 @@ export type SSNovelBody = {
 export type SSNovel = {
   id: number;
   title: string;
-  username: string;
   created_at: string;
   updated_at: string;
   ssnovel_bodies: SSNovelBody[];
