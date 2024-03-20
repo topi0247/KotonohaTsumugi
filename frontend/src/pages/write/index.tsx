@@ -1,30 +1,21 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/router";
-import { User } from "@/types/typs";
 import { Button } from "@mui/material";
 
 const Write = () => {
-  const { currentUser } = useAuth();
-  const [user, setUser] = useState({} as User);
+  const { user } = useAuth();
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [textCount, setTextCount] = useState(0);
   const router = useRouter();
 
-  const fetchUser = useCallback(async () => {
-    const data = await currentUser();
-    if (data) {
-      setUser(data);
-    } else {
+  useEffect(() => {
+    if (!user) {
       router.push("/login");
     }
-  }, [currentUser, router]);
-
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;

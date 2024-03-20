@@ -16,9 +16,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      namespace :users do
-        get 'current_user' => 'current_user#index'
-      end
+      get 'logged_in' => 'auth#logged_in'
       resources :ssnovels, only: [:index, :create, :show]
       resources :ssnovel_bodies, only: [:create]
     end

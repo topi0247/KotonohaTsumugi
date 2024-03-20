@@ -2,14 +2,27 @@ import { useCallback, useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/router";
-import { SSNovelBody, SSNovel, User } from "@/types/typs";
+import { SSNovelBody, SSNovel } from "@/types/typs";
 import { Button } from "@mui/material";
 import ReadPage from "./readPage";
 
+const NarrativeStage2Number: { [key: string]: number } = {
+  beginning: 0,
+  rising_action: 1,
+  climax: 2,
+  falling_action: 3,
+};
+
+const NarrativeStage2String: { [key: string]: string } = {
+  beginning: "起",
+  rising_action: "承",
+  climax: "転",
+  falling_action: "結",
+};
+
 const WriteContinue = () => {
   const { id } = useRouter().query;
-  const { currentUser } = useAuth();
-  const [user, setUser] = useState({} as User);
+  const { user } = useAuth();
   const [text, setText] = useState("");
   const [textCount, setTextCount] = useState(0);
   const [ssnovel, setSSNovel] = useState({} as SSNovel);
@@ -19,18 +32,10 @@ const WriteContinue = () => {
   const router = useRouter();
 
   const fetchData = useCallback(async () => {
-    if (!id) {
+    if (!id || !user) {
       router.push("/read");
       return;
     }
-
-    currentUser().then((data) => {
-      if (data) {
-        setUser(data);
-      } else {
-        router.push("/login");
-      }
-    });
 
     // TODO : このあたりはAPIクライアントを作成して切り出す
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/ssnovels/${id}`, {
@@ -59,11 +64,11 @@ const WriteContinue = () => {
         setNarrativeStage(nextStage);
         setLoading(false);
       });
-  }, [id, currentUser, router, user.id]);
+  }, [id, router, user]);
 
   useEffect(() => {
     fetchData();
-  }, [fetchData, router]);
+  }, [fetchData]);
 
   useEffect(() => {
     if (narrativeStage === "") {
@@ -84,26 +89,6 @@ const WriteContinue = () => {
     }
   };
 
-  const getNarrativeIndex = () => {
-    const narrative_stage: { [key: string]: number } = {
-      beginning: 0,
-      rising_action: 1,
-      climax: 2,
-      falling_action: 3,
-    };
-    return narrative_stage[narrativeStage];
-  };
-
-  const getNarrativeString = () => {
-    const narrative_stage: { [key: string]: string } = {
-      beginning: "起",
-      rising_action: "承",
-      climax: "転",
-      falling_action: "結",
-    };
-    return narrative_stage[narrativeStage];
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
     setText(e.target.value);
@@ -120,7 +105,7 @@ const WriteContinue = () => {
     const body = {
       ssnovel_id: id,
       content: text,
-      narrative_stage: getNarrativeIndex(),
+      narrative_stage: NarrativeStage2Number[narrativeStage],
     };
 
     const response = await fetch(
@@ -182,16 +167,18 @@ const WriteContinue = () => {
               </h2>
             </div>
             <div className="flex m-4 text-bold justify-between items-center">
-              <h3 className="text-3xl">{getNarrativeString()}</h3>
+              <h3 className="text-3xl">
+                {NarrativeStage2String[narrativeStage]}
+              </h3>
               <h3 className="text-end text-2xl">{user?.name}</h3>
             </div>
             <div
               className={`w-[1000px] h-[630px] m-auto p-5
-              ${getBgColor(getNarrativeIndex())}`}
+              ${getBgColor(NarrativeStage2Number[narrativeStage])}`}
             >
               <textarea
                 className={`resize-none leading-[calc(24px+25px)] h-full focus:outline-none text-2xl tracking-widest px-3 overflow-hidden w-full break-all
-                ${getBgColor(getNarrativeIndex())}`}
+                ${getBgColor(NarrativeStage2Number[narrativeStage])}`}
                 onChange={handleChange}
                 value={text}
                 placeholder="・・・・・・"

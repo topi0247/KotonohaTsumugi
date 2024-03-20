@@ -36,6 +36,6 @@ module App
       g.test_framework false
     end
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore, key: '_relay_writer_session'
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_kotonoha_tsumugi_session'
   end
 end
