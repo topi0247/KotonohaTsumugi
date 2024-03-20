@@ -1,58 +1,135 @@
-import Link from "next/link";
-import style from "./headers.module.css";
-import { memo, useEffect, useState } from "react";
+import Style from "./headers.module.css";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/providers/auth";
 import { useRead } from "@/providers/reading";
+import { useRouter } from "next/router";
+
+const TagButton = memo(
+  ({
+    children,
+    onClick,
+  }: {
+    children: React.ReactNode;
+    onClick: () => void;
+  }) => {
+    return (
+      <span className={Style.tag} onClick={onClick}>
+        {children}
+      </span>
+    );
+  }
+);
 
 const Headers = memo(() => {
   const { isLoggedIn } = useAuth();
   const [login, setLogin] = useState(false);
   const { isReading } = useRead();
+  const [path, setPath] = useState("");
+  const router = useRouter();
+  const isClickRef = useRef(false);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const path = url.pathname;
+    isClickRef.current = path === "/" ? false : true;
+  }, []);
 
   useEffect(() => {
     setLogin(isLoggedIn);
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    if (!path) return;
+    router.push(path);
+    setPath("");
+    isClickRef.current = true;
+  }, [router, path]);
+
   return (
-    <header className="w-32 z-10 fixed">
-      <div>
-        <h1 className={`text-3xl mt-32 mx-12 ${isReading ? "blur-sm" : ""}`}>
-          言の葉つむぎ
+    <header
+      className={`w-screen z-10 fixed duration-1000 transform ${
+        isClickRef.current ? "translate-x-8" : "-translate-x-1/2"
+      }`}
+    >
+      <div className="w-full h-full">
+        <h1
+          className={`text-4xl mt-28 mx-12 transition-all ${
+            isReading ? "blur-sm" : ""
+          } ${isClickRef.current ? "pr-8" : null}`}
+        >
+          <span className="inline-block tracking-tighter opacity-0 animate-text-animation transform translate-y-[-1rem] animation-delay-1 mb-3">
+            言
+          </span>
+          <span className="inline-block tracking-tighter opacity-0 animate-text-animation transform translate-y-[-1rem] animation-delay-2 mb-3">
+            の
+          </span>
+          <span className="inline-block tracking-tighter opacity-0 animate-text-animation transform translate-y-[-1rem] animation-delay-3 mb-3">
+            葉
+          </span>
+          <span className="inline-block tracking-tighter opacity-0 animate-text-animation transform translate-y-[-1rem] animation-delay-4 mb-3">
+            つ
+          </span>
+          <span className="inline-block tracking-tighter opacity-0 animate-text-animation transform translate-y-[-1rem] animation-delay-5 mb-3">
+            む
+          </span>
+          <span className="inline-block tracking-tighter opacity-0 animate-text-animation transform translate-y-[-1rem] animation-delay-6">
+            ぎ
+          </span>
         </h1>
         <nav
-          className={`fixed right-[-35px] h-full flex justify-center items-center mt-32 ${
+          className={`absolute right-0 top-[130%] flex justify-center items-center transition-all ${
             isReading ? "blur-sm" : ""
           }`}
         >
           <ul className="flex flex-col horizontal-tb text-xl tracking-[20px] gap-4">
-            <li className="transition-transform duration-50 ease-in-out hover:translate-x-[-50px] hover:translate-y-[10px]">
-              <Link href="/read" className={style.tag}>
-                書庫
-              </Link>
+            <li
+              className={`transition-transform duration-50 ease-in-out ${
+                isClickRef.current
+                  ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
+                  : "hover:translate-y-2"
+              }`}
+            >
+              <TagButton onClick={() => setPath("/read")}>書庫</TagButton>
             </li>
             {login ? (
               <>
-                <li className="transition-transform duration-50 ease-in-out hover:translate-x-[-50px] hover:translate-y-[10px]">
-                  <Link href="/write" className={style.tag}>
-                    執筆
-                  </Link>
+                <li
+                  className={`transition-transform duration-50 ease-in-out ${
+                    isClickRef.current
+                      ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
+                      : "hover:translate-y-2"
+                  }`}
+                >
+                  <TagButton onClick={() => setPath("/write")}>執筆</TagButton>
                 </li>
-                <li className="transition-transform duration-50 ease-in-out hover:translate-x-[-50px] hover:translate-y-[10px]">
-                  <Link href="/user" className={style.tag}>
-                    私室
-                  </Link>
+                <li
+                  className={`transition-transform duration-50 ease-in-out ${
+                    isClickRef.current
+                      ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
+                      : "hover:translate-y-2"
+                  }`}
+                >
+                  <TagButton onClick={() => setPath("/user")}>私室</TagButton>
                 </li>
-                <li className="transition-transform duration-50 ease-in-out hover:translate-x-[-50px] hover:translate-y-[10px]">
-                  <Link href="/logout" className={`${style.tag}`}>
-                    退出
-                  </Link>
+                <li
+                  className={`transition-transform duration-50 ease-in-out ${
+                    isClickRef.current
+                      ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
+                      : "hover:translate-y-2"
+                  }`}
+                >
+                  <TagButton onClick={() => setPath("/logout")}>退室</TagButton>
                 </li>
               </>
             ) : (
-              <li className="transition-transform duration-50 ease-in-out hover:translate-x-[-50px] hover:translate-y-[10px]">
-                <Link href="/login" className={style.tag}>
-                  入室
-                </Link>
+              <li
+                className={`transition-transform duration-50 ease-in-out ${
+                  isClickRef.current
+                    ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
+                    : "hover:translate-y-2"
+                }`}
+              >
+                <TagButton onClick={() => setPath("/login")}>入室</TagButton>
               </li>
             )}
           </ul>
@@ -61,5 +138,5 @@ const Headers = memo(() => {
     </header>
   );
 });
-Headers.displayName = "Headers";
+
 export default Headers;

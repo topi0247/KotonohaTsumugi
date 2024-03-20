@@ -20,6 +20,7 @@
     "swiper": "^11.0.7"
   },
   "devDependencies": {
+    "@tailwindcss/custom-forms": "^0.2.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
