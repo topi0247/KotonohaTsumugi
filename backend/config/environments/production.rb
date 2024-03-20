@@ -89,5 +89,5 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   # 異なるドメイン間でのCookieの送受信を許可する
-  Rails.application.config.session_store :cookie_store, key: "_kotonoha_tsumugi_session", domain: "kotonoha-tsumugi.vercel.app", secure: true, same_site: :none
+  Rails.application.config.session_store :cookie_store, key: "_kotonoha_tsumugi_session", domain: ".vercel.app", secure: true, same_site: :none
 end
