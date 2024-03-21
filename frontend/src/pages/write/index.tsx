@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "./index.module.css";
+import Styles from "./index.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";
@@ -15,7 +15,7 @@ const Write = () => {
     if (!user) {
       router.push("/login");
     }
-  }, []);
+  }, [user, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -50,7 +50,7 @@ const Write = () => {
   };
 
   return (
-    <article className="mr-32 w-full grid grid-cols-5">
+    <article className="mr-32 w-full grid grid-cols-5 opacity-0 animate-text-animation-op animation-delay-1">
       <section className="col-span-4 w-full ml-auto flex flex-col py-10 relative">
         <div className="text-4xl mx-1 flex justify-between items-center h-full">
           <input
@@ -75,10 +75,17 @@ const Write = () => {
         </div>
       </section>
       <div className="col-span-1 w-full max-w-[1100px] my-10 horizontal-tb flex flex-col justify-center items-center gap-3">
-        <Button variant="outlined" type="button" onClick={handleClick}>
+        <Button
+          variant="outlined"
+          type="button"
+          onClick={handleClick}
+          disabled={textCount > 400}
+        >
           紡いだ
         </Button>
-        <p>文字数：{textCount} / 400</p>
+        <p className={textCount > 400 ? "text-red-500 underline" : ""}>
+          文字数：{textCount} / 400
+        </p>
       </div>
     </article>
   );

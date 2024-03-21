@@ -47,8 +47,8 @@ const Headers = memo(() => {
 
   return (
     <header
-      className={`w-screen z-10 fixed duration-1000 transform ${
-        isClickRef.current ? "translate-x-8" : "-translate-x-1/2"
+      className={`w-full z-10 fixed duration-1000 transform ${
+        isClickRef.current ? "translate-x-8 w-32" : "-translate-x-1/2"
       }`}
     >
       <div className="w-full h-full">
@@ -83,7 +83,7 @@ const Headers = memo(() => {
         >
           <ul className="flex flex-col horizontal-tb text-xl tracking-[20px] gap-4">
             <li
-              className={`transition-transform duration-50 ease-in-out ${
+              className={`opacity-0 animate-text-animation-op animation-delay-7 transition-all ${
                 isClickRef.current
                   ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
                   : "hover:translate-y-2"
@@ -94,7 +94,7 @@ const Headers = memo(() => {
             {login ? (
               <>
                 <li
-                  className={`transition-transform duration-50 ease-in-out ${
+                  className={`opacity-0 animate-text-animation-op animation-delay-8 transition-all ${
                     isClickRef.current
                       ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
                       : "hover:translate-y-2"
@@ -103,7 +103,7 @@ const Headers = memo(() => {
                   <TagButton onClick={() => setPath("/write")}>執筆</TagButton>
                 </li>
                 <li
-                  className={`transition-transform duration-50 ease-in-out ${
+                  className={`opacity-0 animate-text-animation-op animation-delay-8 transition-all ${
                     isClickRef.current
                       ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
                       : "hover:translate-y-2"
@@ -112,7 +112,7 @@ const Headers = memo(() => {
                   <TagButton onClick={() => setPath("/user")}>私室</TagButton>
                 </li>
                 <li
-                  className={`transition-transform duration-50 ease-in-out ${
+                  className={`opacity-0 animate-text-animation-op animation-delay-9 transition-all ${
                     isClickRef.current
                       ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
                       : "hover:translate-y-2"
@@ -123,7 +123,7 @@ const Headers = memo(() => {
               </>
             ) : (
               <li
-                className={`transition-transform duration-50 ease-in-out ${
+                className={`opacity-0 animate-text-animation-op animation-delay-8 transition-all ${
                   isClickRef.current
                     ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
                     : "hover:translate-y-2"

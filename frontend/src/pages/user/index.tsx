@@ -59,7 +59,7 @@ const UserIndex = () => {
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     fetchData();
@@ -131,7 +131,7 @@ const UserIndex = () => {
   return (
     <>
       <article
-        className={`w-full mx-auto my-32 mr-16 horizontal-tb transition-all ${
+        className={`w-full mx-auto my-32 mr-16 horizontal-tb transition-all opacity-0 animate-text-animation-op animation-delay-1 ${
           isReading ? "blur-sm" : ""
         }`}
       >
