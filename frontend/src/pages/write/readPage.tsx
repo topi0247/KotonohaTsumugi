@@ -45,7 +45,7 @@ const ReadPage = memo(
       if (!isReading) {
         toggleRead();
       }
-      setMovePage(120);
+      setMovePage(100);
       setReadPage(true);
       setRotatePage(0);
     };
@@ -55,7 +55,7 @@ const ReadPage = memo(
     return (
       <>
         <section
-          className={`absolute w-[780px] h-[630px] shadow-md hover:translate-x-10 transition-all p-4 ${bgColor}`}
+          className={`absolute  h-[630px] shadow-md hover:translate-x-10 transition-all p-4 ${bgColor}`}
           style={{
             ...style,
             transform: `translateX(${movePage}%) rotate(${rotatePage}deg)`,

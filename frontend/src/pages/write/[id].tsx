@@ -49,9 +49,7 @@ const WriteContinue = () => {
       .then((data) => {
         const ssnovel_bodies = data.ssnovel_bodies;
         const userSearch = ssnovel_bodies.find(
-          ({ body }: { body: SSNovelBody }) => {
-            body.user.id === user.id;
-          }
+          (body: SSNovelBody) => body.user && body.user.id === user.id
         );
         if (userSearch) {
           router.push("/read");
@@ -69,12 +67,6 @@ const WriteContinue = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-
-  useEffect(() => {
-    if (narrativeStage === "") {
-      router.push("/read");
-    }
-  }, [narrativeStage, router]);
 
   const getNextNarrativeStage = (stage: string) => {
     switch (stage) {
