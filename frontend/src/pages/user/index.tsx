@@ -19,9 +19,8 @@ const UserIndex = () => {
   const [novelsType, setNovelsType] = useState(0);
   const [readingId, setReadingId] = useState(0);
 
-  if (!user) return null;
-
   const fetchData = useCallback(async () => {
+    if (!user) return null;
     const getNovelsData = (data: SSNovel[], stage: string) => {
       return data.filter((ssnovel) =>
         ssnovel.ssnovel_bodies.some(
