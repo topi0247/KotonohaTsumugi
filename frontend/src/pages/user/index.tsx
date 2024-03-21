@@ -1,6 +1,6 @@
 import { useAuth } from "@/providers/auth";
 import { useCallback, useEffect, useState } from "react";
-import { SSNovel, SSNovelBody } from "@/types/typs";
+import { SSNovel } from "@/types/typs";
 import { useRead } from "@/providers/reading";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -22,6 +22,14 @@ const UserIndex = () => {
   if (!user) return null;
 
   const fetchData = useCallback(async () => {
+    const getNovelsData = (data: SSNovel[], stage: string) => {
+      return data.filter((ssnovel) =>
+        ssnovel.ssnovel_bodies.some(
+          (body) => body.user.id === user.id && body.narrative_stage === stage
+        )
+      );
+    };
+
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/user_ssnovels`,
@@ -94,14 +102,6 @@ const UserIndex = () => {
       });
     };
   }, [novels]);
-
-  const getNovelsData = (data: SSNovel[], stage: string) => {
-    return data.filter((ssnovel) =>
-      ssnovel.ssnovel_bodies.some(
-        (body) => body.user.id === user.id && body.narrative_stage === stage
-      )
-    );
-  };
 
   const handleClick = (id: number) => {
     setReadingId(id);
