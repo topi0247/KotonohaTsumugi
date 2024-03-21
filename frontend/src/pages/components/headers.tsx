@@ -19,6 +19,7 @@ const TagButton = memo(
     );
   }
 );
+TagButton.displayName = "TagButton";
 
 const Headers = memo(() => {
   const { isLoggedIn } = useAuth();
