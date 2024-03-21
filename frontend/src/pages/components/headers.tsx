@@ -48,8 +48,8 @@ const Headers = memo(() => {
 
   return (
     <header
-      className={`w-full z-10 fixed duration-1000 transform ${
-        isClickRef.current ? "translate-x-8 w-32" : "-translate-x-1/2"
+      className={`z-10 fixed duration-1000 transform ${
+        isClickRef.current ? "translate-x-8 w-32" : "-translate-x-1/2 w-full "
       }`}
     >
       <div className="w-full h-full">
