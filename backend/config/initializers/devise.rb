@@ -28,6 +28,7 @@ Devise.setup do |config|
 
   config.responder.error_status = :unprocessable_entity
   config.responder.redirect_status = :see_other
+  config.extend_remember_period = true
 
   config.jwt do |jwt|
     jwt.secret = Rails.application.credentials.fetch(:secret_key_base)
