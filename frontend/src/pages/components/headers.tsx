@@ -49,14 +49,14 @@ const Headers = memo(() => {
   return (
     <header
       className={`z-10 fixed duration-1000 transform ${
-        isClickRef.current ? "translate-x-8 w-32" : "-translate-x-1/2 w-full "
+        isClickRef.current ? "translate-x-8 w-32" : "-translate-x-1/2 w-full"
       }`}
     >
-      <div className="w-full h-full">
+      <div>
         <h1
-          className={`text-4xl mt-28 mx-12 transition-all ${
-            isReading ? "blur-sm" : ""
-          } ${isClickRef.current ? "pr-8" : null}`}
+          className={`text-4xl mt-16 transition-all ${
+            isClickRef.current ? "pr-16" : ""
+          } ${isReading ? "blur-sm" : ""} `}
         >
           <span className="inline-block tracking-tighter opacity-0 animate-text-animation transform translate-y-[-1rem] animation-delay-1 mb-3">
             言
@@ -78,15 +78,17 @@ const Headers = memo(() => {
           </span>
         </h1>
         <nav
-          className={`absolute right-0 top-[130%] flex justify-center items-center transition-all ${
-            isReading ? "blur-sm" : ""
-          }`}
+          className={`absolute top-[110%] flex justify-center items-center transition-all ${
+            isClickRef.current ? "right-0" : "-right-10"
+          } ${isReading ? "blur-sm" : ""}`}
         >
           <ul className="flex flex-col horizontal-tb text-xl tracking-[20px] gap-4">
             <li
               className={`opacity-0 animate-text-animation-op animation-delay-7 transition-all ${
                 isClickRef.current
-                  ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
+                  ? path === "/read"
+                    ? "-translate-x-6 translate-y-1 "
+                    : "-rotate-6"
                   : "hover:translate-y-2"
               }`}
             >

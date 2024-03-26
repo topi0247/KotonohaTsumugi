@@ -1,7 +1,6 @@
 class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
-  # 会員登録のままログイン状態維持
   def create
     super { |resource| resource.remember_me = true }
   end
