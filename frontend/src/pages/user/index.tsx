@@ -1,6 +1,6 @@
 import { useAuth } from "@/providers/auth";
 import { useCallback, useEffect, useState } from "react";
-import { SSNovel } from "@/types/typs";
+import { SSNovel } from "@/types";
 import { useRead } from "@/providers/reading";
 import "swiper/css";
 import "swiper/css/pagination";

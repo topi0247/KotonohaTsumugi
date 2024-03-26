@@ -86,9 +86,7 @@ const Headers = memo(() => {
             <li
               className={`opacity-0 animate-text-animation-op animation-delay-7 transition-all ${
                 isClickRef.current
-                  ? path === "/read"
-                    ? "-translate-x-6 translate-y-1 "
-                    : "-rotate-6"
+                  ? "hover:-translate-x-6 hover:translate-y-1  -rotate-6"
                   : "hover:translate-y-2"
               }`}
             >
