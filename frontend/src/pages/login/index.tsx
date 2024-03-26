@@ -18,13 +18,13 @@ const LoginPage = () => {
       setIsErrorMsg(["空欄があるよ", "埋めてね"]);
       return;
     }
-    login(email, password).then((res) => {
-      if (res !== null) {
+    await login(email, password)
+      .then(() => {
         router.push("/read");
-      } else {
+      })
+      .catch(() => {
         setIsErrorMsg(["みつからないよ", "間違えてるかも…"]);
-      }
-    });
+      });
   };
 
   return (
@@ -55,13 +55,13 @@ const LoginPage = () => {
             />
             <div className="flex justify-center items-center flex-col gap-3">
               <Button variant="outlined" type="submit">
-                紡ぎにいく
+                紡ぎたい！
               </Button>
               <Link
                 href="user/new"
                 className="border-b border-green-600 text-green-600"
               >
-                初めて紡ぐ
+                初めて紡ぐ方はこちら
               </Link>
             </div>
           </form>

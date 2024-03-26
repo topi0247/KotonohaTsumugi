@@ -6,7 +6,7 @@ class User < ApplicationRecord
   :rememberable,
   :validatable,
   :jwt_authenticatable,
-  jwt_revocation_strategy: self
+  jwt_revocation_strategy: Devise::JWT::RevocationStrategies::JTIMatcher
   has_many :ssnovel_bodies, dependent: :destroy
   has_many :ssnovels, through: :ssnovel_bodies
   validates :email, presence: true, uniqueness: true

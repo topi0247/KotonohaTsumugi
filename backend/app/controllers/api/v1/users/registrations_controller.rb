@@ -2,13 +2,17 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
   def create
-    super { |resource| resource.remember_me = true }
+    super do |resource|
+      if resource.persisted?
+        sign_in(resource)
+      end
+    end
   end
 
   private
 
   def sign_up_params
-    params.permit(:email, :password, :name)
+    params.permit(:email, :password, :password_confirmation, :name)
   end
 
   def respond_with(resource, _opts = {})

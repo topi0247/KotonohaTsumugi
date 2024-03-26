@@ -1,4 +1,4 @@
-import { User } from "@/types/typs";
+import { User } from "@/types";
 import {
   createContext,
   useContext,
@@ -10,14 +10,14 @@ import {
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   signUp: (
     name: string,
     email: string,
     password: string,
     passwordConfirm: string
-  ) => Promise<void>;
+  ) => Promise<boolean>;
 }
 
 interface AuthProviderProps {
@@ -63,32 +63,33 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     checkLoggedIn();
   }, []);
 
-  const login = async (email: string, password: string) => {
-    try {
-      const response = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      });
+  const login = (email: string, password: string): Promise<boolean> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch(`${API_URL}/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ email, password }),
+        });
 
-      const resJson = await response.json();
-      const data = resJson.data;
-      const status = resJson.status;
+        const resJson = await response.json();
+        const data = resJson.data;
+        const status = resJson.status;
 
-      if (status.code !== 200) {
-        return null;
+        if (status.code !== 200) {
+          throw new Error("ログインに失敗しました");
+        }
+
+        setUser(data);
+        setIsLoggedIn(true);
+        resolve(true);
+      } catch (error) {
+        reject(false);
       }
-
-      setUser(data);
-      setIsLoggedIn(true);
-      return data;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
+    });
   };
 
   const logout = async () => {
@@ -111,31 +112,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  const signUp = async (
+  const signUp = (
     name: string,
     email: string,
     password: string,
     passwordConfirm: string
-  ) => {
-    try {
-      const response = await fetch(`${API_URL}/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ name, email, password, passwordConfirm }),
-      });
+  ): Promise<boolean> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch(`${API_URL}/signup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ name, email, password, passwordConfirm }),
+        });
 
-      if (!response.ok) {
-        throw new Error("登録に失敗しました");
+        if (!response.ok) {
+          throw new Error("登録に失敗しました");
+        }
+        const user = await response.json();
+        setUser(user);
+        setIsLoggedIn(true);
+        resolve(true);
+      } catch (error) {
+        reject(false);
       }
-      const user = await response.json();
-      setUser(user);
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.error(error);
-    }
+    });
   };
 
   const value = {
