@@ -12,7 +12,7 @@ class Api::V1::SsnovelsController < ApplicationController
   end
 
   def user_ssnovels
-    @ssnovels = current_user.ssnovels.includes(ssnovel_bodies: :user)
+    @ssnovels = current_user.ssnovels.includes(ssnovel_bodies: :user).order(updated_at: :desc)
   render json: @ssnovels.map(&:as_custom_json)
   end
 

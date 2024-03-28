@@ -30,21 +30,15 @@ const Headers = memo(() => {
   const isClickRef = useRef(false);
 
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const path = url.pathname;
-    isClickRef.current = path === "/" ? false : true;
-  }, []);
-
-  useEffect(() => {
     setLogin(isLoggedIn);
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (!path) return;
-    router.push(path);
-    setPath("");
-    isClickRef.current = true;
-  }, [router, path]);
+    const url = new URL(window.location.href);
+    const newPath = url.pathname;
+    isClickRef.current = newPath === "/" ? false : true;
+    setPath(newPath);
+  }, [router]);
 
   return (
     <header
@@ -86,51 +80,73 @@ const Headers = memo(() => {
             <li
               className={`opacity-0 animate-text-animation-op animation-delay-7 transition-all ${
                 isClickRef.current
-                  ? "hover:-translate-x-6 hover:translate-y-1  -rotate-6"
+                  ? `hover:-translate-x-6 hover:translate-y-1 -rotate-6 ${
+                      path === "/read" ? "-translate-x-6 translate-y-1" : ""
+                    }`
                   : "hover:translate-y-2"
               }`}
             >
-              <TagButton onClick={() => setPath("/read")}>書庫</TagButton>
+              <TagButton onClick={() => router.push("/read")}>書庫</TagButton>
             </li>
             {login ? (
               <>
                 <li
                   className={`opacity-0 animate-text-animation-op animation-delay-8 transition-all ${
                     isClickRef.current
-                      ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
+                      ? `hover:-translate-x-6 hover:translate-y-1 -rotate-6 ${
+                          path === "/write"
+                            ? "-translate-x-6 translate-y-1"
+                            : ""
+                        }`
                       : "hover:translate-y-2"
                   }`}
                 >
-                  <TagButton onClick={() => setPath("/write")}>執筆</TagButton>
+                  <TagButton onClick={() => router.push("/write")}>
+                    執筆
+                  </TagButton>
                 </li>
                 <li
                   className={`opacity-0 animate-text-animation-op animation-delay-8 transition-all ${
                     isClickRef.current
-                      ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
+                      ? `hover:-translate-x-6 hover:translate-y-1 -rotate-6 ${
+                          path === "/user" ? "-translate-x-6 translate-y-1" : ""
+                        }`
                       : "hover:translate-y-2"
                   }`}
                 >
-                  <TagButton onClick={() => setPath("/user")}>私室</TagButton>
+                  <TagButton onClick={() => router.push("/user")}>
+                    私室
+                  </TagButton>
                 </li>
                 <li
                   className={`opacity-0 animate-text-animation-op animation-delay-9 transition-all ${
                     isClickRef.current
-                      ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
+                      ? `hover:-translate-x-6 hover:translate-y-1 -rotate-6 ${
+                          path === "/logout"
+                            ? "-translate-x-6 translate-y-1"
+                            : ""
+                        }`
                       : "hover:translate-y-2"
                   }`}
                 >
-                  <TagButton onClick={() => setPath("/logout")}>退室</TagButton>
+                  <TagButton onClick={() => router.push("/logout")}>
+                    退室
+                  </TagButton>
                 </li>
               </>
             ) : (
               <li
                 className={`opacity-0 animate-text-animation-op animation-delay-8 transition-all ${
                   isClickRef.current
-                    ? "hover:-translate-x-6 hover:translate-y-1 -rotate-6"
+                    ? `hover:-translate-x-6 hover:translate-y-1 -rotate-6 ${
+                        path === "/login" ? "-translate-x-6 translate-y-1" : ""
+                      }`
                     : "hover:translate-y-2"
                 }`}
               >
-                <TagButton onClick={() => setPath("/login")}>入室</TagButton>
+                <TagButton onClick={() => router.push("/login")}>
+                  入室
+                </TagButton>
               </li>
             )}
           </ul>

@@ -43,6 +43,7 @@ const LoginPage = () => {
               variant="standard"
               type="email"
               placeholder="example@example.com"
+              autoComplete="email"
               onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
@@ -51,6 +52,7 @@ const LoginPage = () => {
               variant="standard"
               type="password"
               placeholder="******"
+              autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
             />
             <div className="flex justify-center items-center flex-col gap-3">

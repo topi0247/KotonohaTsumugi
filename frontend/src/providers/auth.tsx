@@ -126,14 +126,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ name, email, password, passwordConfirm }),
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            password_confirmation: passwordConfirm,
+          }),
         });
 
         if (!response.ok) {
           throw new Error("登録に失敗しました");
         }
-        const user = await response.json();
-        setUser(user);
+        const data = await response.json();
+        setUser(data.data);
         setIsLoggedIn(true);
         resolve(true);
       } catch (error) {

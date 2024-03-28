@@ -38,8 +38,8 @@ const SignUp = () => {
 
     try {
       await signUp(name, email, password, passwordConfirmation)
-        .then((data) => {
-          router.push("/");
+        .then(() => {
+          router.push("/read");
         })
         .catch(() => {
           setIsErrorMsg(["登録できないよ", "もう一度やってみてね"]);
@@ -64,6 +64,7 @@ const SignUp = () => {
               label="なまえ"
               variant="standard"
               placeholder="あくたがわ"
+              autoComplete="new-name"
               onChange={(e) => setName(e.target.value)}
             />
             <TextField
@@ -72,6 +73,7 @@ const SignUp = () => {
               variant="standard"
               type="email"
               placeholder="example@example.com"
+              autoComplete="new-email"
               onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
@@ -80,6 +82,7 @@ const SignUp = () => {
               variant="standard"
               type="password"
               placeholder="******"
+              autoComplete="new-password"
               onChange={(e) => setPassword(e.target.value)}
             />
             <p className="text-xs text-start">※６文字以上</p>
@@ -89,6 +92,7 @@ const SignUp = () => {
               variant="standard"
               type="password"
               placeholder="******"
+              autoComplete="new-password"
               onChange={(e) => setPasswordConfirmation(e.target.value)}
             />
             <div className="flex justify-center items-center flex-col gap-3">
