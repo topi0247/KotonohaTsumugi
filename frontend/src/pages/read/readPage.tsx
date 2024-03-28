@@ -1,4 +1,4 @@
-import { SSNovelBody } from "@/types/typs";
+import { SSNovelBody } from "@/types";
 import { memo } from "react";
 
 const NarrativeStageConvert: { [key: string]: string } = {

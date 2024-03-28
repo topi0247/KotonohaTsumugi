@@ -1,5 +1,5 @@
 import { useRead } from "@/providers/reading";
-import { SSNovel, SSNovelBody } from "@/types/typs";
+import { SSNovel, SSNovelBody } from "@/types";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";

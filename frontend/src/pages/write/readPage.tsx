@@ -1,4 +1,4 @@
-import { SSNovelBody } from "@/types/typs";
+import { SSNovelBody } from "@/types";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { memo, useCallback, useEffect, useState } from "react";
 

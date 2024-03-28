@@ -1,5 +1,5 @@
 import Style from "./index.module.css";
-import { SSNovel } from "@/types/typs";
+import { SSNovel } from "@/types";
 import { memo } from "react";
 
 const bgcolor = ["bg-white", "bg-blue-100", "bg-green-100", "bg-purple-100"];

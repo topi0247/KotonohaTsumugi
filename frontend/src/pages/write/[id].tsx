@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { useAuth } from "@/providers/auth";
 import { useRouter } from "next/router";
-import { SSNovelBody, SSNovel } from "@/types/typs";
+import { SSNovelBody, SSNovel } from "@/types";
 import { Button } from "@mui/material";
 import ReadPage from "./readPage";
 
